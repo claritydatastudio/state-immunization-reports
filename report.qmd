@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-   state: california
+   state: new hampshire
    end_date: "September 1, 2025"
 execute:
   echo: false
@@ -309,8 +309,7 @@ df_dtap |> dtap_vaccination_comparison_chart(df, state_title)
 is_above_yoy_comparison <- dtap_line_df |>
   filter(geography == state_title, year %in% c(2022, 2023)) |>
   summarise(
-    increase = estimate_percent[year == 2023] >
-      estimate_percent[year == 2022]
+    increase = estimate_percent[year == 2023] > estimate_percent[year == 2022]
   ) |>
   pull(increase) |>
   round()
