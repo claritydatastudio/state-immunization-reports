@@ -9,16 +9,17 @@ library(janitor)
 
 # Import- measles cases dataset
 
-us_states <-
+us_states_and_territories <-
   state.name |>
   as_tibble() |>
-  set_names("state")
+  set_names("state") |> 
+  add_row(state = "District of Columbia") |> 
+  add_row(state = "Puerto Rico")
 
 total_measles_cases <-
   read_csv("https://static.dwcdn.net/data/4zhkG.csv?v=1757352000000") |>
   clean_names() |>
-  filter(state %in% state.name) |>
-  full_join(us_states) |>
+  full_join(us_states_and_territories) |>
   select(state, total) |>
   arrange(state) |>
   mutate(total = replace_na(total, 0))
