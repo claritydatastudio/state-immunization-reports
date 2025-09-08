@@ -2,25 +2,30 @@
 
 library(tidyverse)
 library(janitor)
-library(readr)
-library(stringr)
-library(dplyr)
-library(tidycensus)
 
 # Measles -----------------------------------------------------------------
 
 # CSV comes from https://publichealth.jhu.edu/ivac/resources/us-measles-tracker
 
 # Import- measles cases dataset
-measles_cases <- read_csv("data-raw/measles_cases_09_01.csv")
-measles_cases <- janitor::clean_names(measles_cases)
-total_measles_case <- measles_cases |>
-  select(state, total)
 
+us_states <-
+  state.name |>
+  as_tibble() |>
+  set_names("state")
+
+total_measles_cases <-
+  read_csv("https://static.dwcdn.net/data/4zhkG.csv?v=1757352000000") |>
+  clean_names() |>
+  filter(state %in% state.name) |>
+  full_join(us_states) |>
+  select(state, total) |>
+  arrange(state) |>
+  mutate(total = replace_na(total, 0))
 
 # Export data
-write_csv(total_measles_case, "data-clean/total_measles_cases.csv")
-
+total_measles_cases |>
+  write_csv("data-clean/total_measles_cases.csv")
 
 # MMR Coverage ------------------------------------------------------------
 # CSV comes from CDC's SchoolVaxView (https://data.cdc.gov/Vaccinations/Vaccination-Coverage-and-Exemptions-among-Kinderga/ijqb-a7ye/about_data)
@@ -192,6 +197,8 @@ state_policies_filtered <- state_policies |>
 write_csv(state_policies, "data-clean/state_policies_final.csv")
 
 # Census Data ------------------------------------------------------------
+
+# library(tidycensus)
 
 # population_by_state <-
 #   get_decennial(
