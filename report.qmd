@@ -111,17 +111,8 @@ spending_us <- health_spending |>
 spending_state_label <- paste0("$", spending_state)
 spending_us_label <- paste0("$", spending_us)
 
-us_states <- states() |>
-    clean_names() |>
-    select(name) |>
-    filter(
-        !name %in%
-            c(
-                "Commonwealth of the Northern Mariana Islands",
-                "American Samoa",
-                "United States Virgin Islands"
-            )
-    )
+us_states <-
+  read_rds("data-clean/us_states.rds")
 
 population_by_state <-
     read_rds("data-clean/population_by_state.rds")

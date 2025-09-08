@@ -12,8 +12,8 @@ library(janitor)
 us_states_and_territories <-
   state.name |>
   as_tibble() |>
-  set_names("state") |> 
-  add_row(state = "District of Columbia") |> 
+  set_names("state") |>
+  add_row(state = "District of Columbia") |>
   add_row(state = "Puerto Rico")
 
 total_measles_cases <-
@@ -241,3 +241,24 @@ state_policies |>
 
 # population_by_state |>
 #   write_rds("data-clean/population_by_state.rds")
+
+
+# Geospatial Data ---------------------------------------------------------
+
+library(tigris)
+
+us_states <-
+  states() |>
+  clean_names() |>
+  select(name) |>
+  filter(
+    !name %in%
+      c(
+        "Commonwealth of the Northern Mariana Islands",
+        "American Samoa",
+        "United States Virgin Islands"
+      )
+  )
+
+us_states |> 
+  write_rds("data-clean/us_states.rds")
