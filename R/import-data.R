@@ -176,29 +176,39 @@ dtap_filtered_states |>
 # Vaccine Exemptions ------------------------------------------------------
 # CSV from NCSL's brief (https://www.ncsl.org/health/state-non-medical-exemptions-from-school-immunization-requirements)
 
-vaccine_exemptions <- read_csv("data-raw/non_medical_exemption_policies.csv")
+# library(rvest)
+#
+# vaccine_exemptions <-
+#   read_html("https://www.ncsl.org/health/state-non-medical-exemptions-from-school-immunization-requirements") |>
+#   html_table() |>
+#   pluck(1)
+
+vaccine_exemptions <-
+  read_csv("data-raw/non_medical_exemption_policies.csv")
 
 # Export dataset
-write_csv(
-  vaccine_exemptions,
-  "data-clean/non_medical_exemption_policies_final.csv"
-)
+vaccine_exemptions |>
+  write_csv("data-clean/non_medical_exemption_policies_final.csv")
 
 # Health Spending ---------------------------------------------------------
 # CSV from from 'America's health rankings'
 
 # Import dataset-Public Health Spending
-health_spending <- read_csv("data-raw/health_spending.csv")
+health_spending <-
+  read_csv("data-raw/health_spending.csv")
 
 # Export dataset
-write_csv(health_spending, "data-clean/health_spending_final.csv")
+health_spending |>
+  write_csv("data-clean/health_spending_final.csv")
 
 # Universal vaccine purchase program------------------------------------------------------
 # CSV from AIM resources page
-universal_purchase <- read_csv("data-raw/universal_purchase.csv")
+universal_purchase <-
+  read_csv("data-raw/universal_purchase.csv")
 
 # Export dataset
-write_csv(universal_purchase, "data-clean/universal_purchase_final.csv")
+universal_purchase |>
+  write_csv("data-clean/universal_purchase_final.csv")
 
 # State policies------------------------------------------------------
 state_policies <- read_csv("data-raw/state_policies_sep05.csv")
