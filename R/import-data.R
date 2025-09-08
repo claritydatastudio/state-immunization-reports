@@ -156,22 +156,22 @@ non_medical_exemptions |>
 # DTaP --------------------------------------------------------------------
 # CSV comes from CDC's ChildVaxView (https://www.cdc.gov/childvaxview/about/interactive-reports.html)
 # Import data set
-dtap_coverage <- read_csv("data-raw/dtap_coverage.csv") |>
-  clean_names()
 
-# Filter
-dtap_filtered_states <- dtap_coverage |>
+dtap_filtered_states <-
+  read_csv("data-raw/dtap_coverage.csv") |>
+  clean_names() |>
   filter(
     vaccine == "DTaP",
     dose == "≥4 Doses",
     dimension == "24 Months",
     birth_year_birth_cohort %in% c("2017", "2018", "2019", "2020", "2021")
   ) |>
+  mutate(year = as.numeric(birth_year_birth_cohort) + 2) |>
   arrange(geography, birth_year_birth_cohort)
 
 # Export dataset
-write_csv(dtap_filtered_states, "data-clean/dtap_coverage_final.csv")
-
+dtap_filtered_states |>
+  write_csv("data-clean/dtap_coverage_final.csv")
 
 # Vaccine Exemptions ------------------------------------------------------
 # CSV from NCSL's brief (https://www.ncsl.org/health/state-non-medical-exemptions-from-school-immunization-requirements)
