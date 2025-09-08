@@ -245,20 +245,20 @@ state_policies |>
 
 # Geospatial Data ---------------------------------------------------------
 
-library(tigris)
-
-us_states <-
-  states() |>
-  clean_names() |>
-  select(name) |>
-  filter(
-    !name %in%
-      c(
-        "Commonwealth of the Northern Mariana Islands",
-        "American Samoa",
-        "United States Virgin Islands"
-      )
-  )
-
-us_states |> 
-  write_rds("data-clean/us_states.rds")
+# library(tigris)
+# 
+# us_states <-
+#   states() |>
+#   clean_names() |>
+#   select(name) |>
+#   filter(
+#     !name %in%
+#       c(
+#         "Commonwealth of the Northern Mariana Islands",
+#         "American Samoa",
+#         "United States Virgin Islands"
+#       )
+#   )
+# 
+# us_states |> 
+#   write_rds("data-clean/us_states.rds")
