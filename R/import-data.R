@@ -211,13 +211,14 @@ universal_purchase |>
   write_csv("data-clean/universal_purchase_final.csv")
 
 # State policies------------------------------------------------------
-state_policies <- read_csv("data-raw/state_policies_sep05.csv")
-names(state_policies) <- tolower(gsub(" ", "_", names(state_policies)))
-state_policies_filtered <- state_policies |>
-  filter(`1_include_in_brief` %in% c(1, "1"))
+state_policies <-
+  read_csv("data-raw/state_policies.csv") |>
+  clean_names() |>
+  filter(x1_include_in_brief == 1)
 
 # Export dataset
-write_csv(state_policies, "data-clean/state_policies_final.csv")
+state_policies |>
+  write_csv("data-clean/state_policies_final.csv")
 
 # Census Data ------------------------------------------------------------
 
