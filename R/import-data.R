@@ -30,12 +30,12 @@ total_measles_cases |>
 # MMR Coverage ------------------------------------------------------------
 # CSV comes from CDC's SchoolVaxView (https://data.cdc.gov/Vaccinations/Vaccination-Coverage-and-Exemptions-among-Kinderga/ijqb-a7ye/about_data)
 
-mmr_coverage <- 
+mmr_coverage <-
   read_csv("data-raw/mmr_coverage.csv") |>
-  clean_names() |> 
-  filter(vaccine_exemption == "MMR") |> 
-  filter(geography_type == "States" | geography == "U.S. Median") 
-  
+  clean_names() |>
+  filter(vaccine_exemption == "MMR") |>
+  filter(geography_type == "States" | geography == "U.S. Median")
+
 # Desired years
 target_years <- c(
   "2020-21",
@@ -46,7 +46,7 @@ target_years <- c(
 )
 
 # Filter the data
-mmr_filtered <- 
+mmr_filtered <-
   mmr_coverage |>
   filter(
     school_year %in% target_years
@@ -69,43 +69,52 @@ wv_filtered <- mmr_coverage |>
   )
 
 # Sort the dataset by descending years
-mmr_filtered_sorted <- 
-  bind_rows(mmr_filtered, wv_filtered, montana_filtered) |> 
+mmr_filtered_sorted <-
+  bind_rows(mmr_filtered, wv_filtered, montana_filtered) |>
   arrange(geography, school_year)
 
 # Export the dataset
-mmr_filtered_sorted |> 
-write_csv("data-clean/mmr_coverage_final.csv")
+mmr_filtered_sorted |>
+  write_csv("data-clean/mmr_coverage_final.csv")
 
 
 # Non-medical exemption rate-----------------------------------------------------------------
 # Data comes from CDC's SchoolVaxView (same dataset as above)
 # Filter for non-medical exemptions for 2023-2024 and 2024-2025
 
-non_medical_exemptions <- mmr_coverage |>
+non_medical_exemptions_states_and_us <-
+  read_csv("data-raw/mmr_coverage.csv") |>
+  clean_names() |>
   filter(
     dose == "Non-Medical Exemption",
-    school_year %in% c("2023-24", "2024-25"),
     (geography_type == "States" | geography == "U.S. Median")
   )
-# New York: 2017-18 and 2018-19
-ny_filtered <- mmr_coverage |>
+
+non_medical_exemptions_23_24 <-
+  non_medical_exemptions_states_and_us |>
   filter(
-    dose == "Non-Medical Exemption",
+    school_year %in% c("2023-24", "2024-25")
+  )
+
+# New York: 2017-18 and 2018-19
+ny_filtered <-
+  non_medical_exemptions_states_and_us |>
+  filter(
     school_year %in% c("2017-18", "2018-19"),
     geography == "New York"
   )
 
 # Montana: 2019-20 and 2020-21
-mt_filtered <- mmr_coverage |>
+mt_filtered <-
+  non_medical_exemptions_states_and_us |>
   filter(
-    dose == "Non-Medical Exemption",
     school_year %in% c("2019-20", "2020-21"),
     geography == "Montana"
   )
 
 # California: 2015-16 and 2016-17
-ca_filtered <- mmr_coverage |>
+ca_filtered <-
+  non_medical_exemptions_states_and_us |>
   filter(
     dose == "Non-Medical Exemption",
     school_year %in% c("2015-16", "2016-17"),
@@ -113,7 +122,8 @@ ca_filtered <- mmr_coverage |>
   )
 
 # Maine: 2022-23 and 2023-24
-me_filtered <- mmr_coverage |>
+me_filtered <-
+  non_medical_exemptions_states_and_us |>
   filter(
     dose == "Non-Medical Exemption",
     school_year %in% c("2022-23"),
@@ -121,24 +131,27 @@ me_filtered <- mmr_coverage |>
   )
 
 # West Virginia: NA
-wv_filtered <- mmr_coverage |>
+wv_filtered <-
+  non_medical_exemptions_states_and_us |>
   filter(
     dose == "Non-Medical Exemption",
     school_year %in% c("2018-19", "2019-20"),
     geography == "West Virginia"
   )
-non_medical_exemptions <- bind_rows(
-  non_medical_exemptions,
-  ny_filtered,
-  mt_filtered,
-  ca_filtered,
-  me_filtered,
-  wv_filtered
-)
 
-head(non_medical_exemptions)
+non_medical_exemptions <-
+  bind_rows(
+    non_medical_exemptions_23_24,
+    ny_filtered,
+    mt_filtered,
+    ca_filtered,
+    me_filtered,
+    wv_filtered
+  )
+
 # Export the dataset
-write_csv(non_medical_exemptions, "data-clean/non_medical_exemption.csv")
+non_medical_exemptions |>
+  write_csv("data-clean/non_medical_exemption.csv")
 
 # DTaP --------------------------------------------------------------------
 # CSV comes from CDC's ChildVaxView (https://www.cdc.gov/childvaxview/about/interactive-reports.html)
