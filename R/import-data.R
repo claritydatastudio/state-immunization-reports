@@ -29,10 +29,13 @@ total_measles_cases |>
 
 # MMR Coverage ------------------------------------------------------------
 # CSV comes from CDC's SchoolVaxView (https://data.cdc.gov/Vaccinations/Vaccination-Coverage-and-Exemptions-among-Kinderga/ijqb-a7ye/about_data)
-# Import- MMR coverage data
-mmr_coverage <- read_csv("data-raw/mmr_coverage.csv") |>
-  clean_names()
 
+mmr_coverage <- 
+  read_csv("data-raw/mmr_coverage.csv") |>
+  clean_names() |> 
+  filter(vaccine_exemption == "MMR") |> 
+  filter(geography_type == "States" | geography == "U.S. Median") 
+  
 # Desired years
 target_years <- c(
   "2020-21",
@@ -41,21 +44,19 @@ target_years <- c(
   "2023-24",
   "2024-25"
 )
+
 # Filter the data
-mmr_filtered <- mmr_coverage |>
+mmr_filtered <- 
+  mmr_coverage |>
   filter(
-    vaccine_exemption == "MMR",
-    school_year %in% target_years,
-    (geography_type == "States" | geography == "U.S. Median")
+    school_year %in% target_years
   )
-# Preview filtered data
-head(mmr_filtered)
+
 # Additional target years for Montana
 montana_years <- c("2016-17", "2017-18", "2018-19", "2019-20", "2020-21")
 
 montana_filtered <- mmr_coverage |>
   filter(
-    `vaccine_exemption` == "MMR",
     school_year %in% montana_years,
     geography == "Montana"
   )
@@ -63,19 +64,18 @@ montana_filtered <- mmr_coverage |>
 # Add West Virginia for 2019-20
 wv_filtered <- mmr_coverage |>
   filter(
-    `vaccine_exemption` == "MMR",
     school_year == "2019-20",
     geography == "West Virginia"
   )
 
-mmr_combined <- bind_rows(mmr_filtered, wv_filtered, montana_filtered)
-
 # Sort the dataset by descending years
-mmr_filtered_sorted <- mmr_combined |>
+mmr_filtered_sorted <- 
+  bind_rows(mmr_filtered, wv_filtered, montana_filtered) |> 
   arrange(geography, school_year)
 
 # Export the dataset
-write_csv(mmr_filtered_sorted, "data-clean/mmr_coverage_final.csv")
+mmr_filtered_sorted |> 
+write_csv("data-clean/mmr_coverage_final.csv")
 
 
 # Non-medical exemption rate-----------------------------------------------------------------
