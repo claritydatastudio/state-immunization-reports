@@ -40,7 +40,6 @@ mmr_coverage_final <- read_csv("data-clean/mmr_coverage_final.csv")
 
 state_policies <- read_csv("data-clean/state_policies_final.csv") |>
     filter(state == state_title) |>
-    filter(`1_include_in_brief` == 1) |>
     filter(!(is.na(bill_number)))
 
 dtap_coverage_final <- read_csv("data-clean/dtap_coverage_final.csv")
