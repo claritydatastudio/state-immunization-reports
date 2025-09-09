@@ -101,16 +101,18 @@ file_move(
     new_path = "reports"
 )
 
-drive_auth(Sys.getenv("GOOGLE_DRIVE_EMAIL"))
+if (str_detect(Sys.getenv("GOOGLE_DRIVE_EMAIL"), "rfortherestofus.com")) {
+    drive_auth(Sys.getenv("GOOGLE_DRIVE_EMAIL"))
 
-pdf_files <- list.files("reports", pattern = "\\.pdf$", full.names = TRUE)
+    pdf_files <- list.files("reports", pattern = "\\.pdf$", full.names = TRUE)
 
-upload_report <- function(report_file) {
-    drive_upload(
-        media = report_file,
-        path = folder <- as_id("1fxoUQYyKK0ef4BRzb3Ab4w1x39s722su"),
-        overwrite = TRUE
-    )
+    upload_report <- function(report_file) {
+        drive_upload(
+            media = report_file,
+            path = folder <- as_id("1fxoUQYyKK0ef4BRzb3Ab4w1x39s722su"),
+            overwrite = TRUE
+        )
+    }
+
+    walk(pdf_files, upload_report)
 }
-
-walk(pdf_files, upload_report)
