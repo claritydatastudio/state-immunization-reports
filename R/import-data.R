@@ -212,10 +212,24 @@ universal_purchase |>
   write_csv("data-clean/universal_purchase_final.csv")
 
 # State policies------------------------------------------------------
+
 state_policies <-
   read_csv("data-raw/state_policies.csv") |>
   clean_names() |>
-  filter(x1_include_in_brief == 1)
+  filter(x1_include_in_brief == 1) |>
+  mutate(
+    bill_valency = case_when(
+      x1_good_0_bad == 1 ~ "Good",
+      x1_good_0_bad == 0 ~ "Bad"
+    )
+  ) |>
+  mutate(
+    bill_status = case_when(
+      x1_enacted_0_not_enacted == 1 ~ "Enacted",
+      x1_enacted_0_not_enacted == 0 ~ "Not enacted"
+    )
+  ) |>
+  select(-c(x1_enacted_0_not_enacted, x1_good_0_bad))
 
 # Export dataset
 state_policies |>
@@ -242,11 +256,10 @@ state_policies |>
 # population_by_state |>
 #   write_rds("data-clean/population_by_state.rds")
 
-
 # Geospatial Data ---------------------------------------------------------
 
 # library(tigris)
-# 
+#
 # us_states <-
 #   states() |>
 #   clean_names() |>
@@ -259,6 +272,6 @@ state_policies |>
 #         "United States Virgin Islands"
 #       )
 #   )
-# 
-# us_states |> 
+#
+# us_states |>
 #   write_rds("data-clean/us_states.rds")
