@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-   state: new hampshire
+   state: idaho
    end_date: "September 1, 2025"
 execute:
   echo: false
