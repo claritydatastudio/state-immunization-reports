@@ -23,14 +23,11 @@ library(tidyverse)
 library(glue)
 library(sf)
 library(janitor)
-library(showtext)
 
 source("R/charts.R")
 
 state <- params$state
 state_title <- gsub(" Of ", " of ", str_to_title(state))
-
-census_api_key(Sys.getenv("TIDYCENSUS_API_KEY"), install = FALSE)
 
 total_measles_cases <- read_csv("data-clean/total_measles_cases.csv")
 

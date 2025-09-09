@@ -1,10 +1,6 @@
 library(tidyverse)
-library(tigris)
 library(sf)
 library(janitor)
-library(tidycensus)
-library(showtext)
-library(ggrepel)
 library(ggfx)
 
 
