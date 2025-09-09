@@ -257,7 +257,7 @@ print(glue(
 cat("\n\n")
 cat(
   glue(
-    "- State-level immunization coverage in {state_title} for key childhood vaccines, such as DTaP and MMR, is {label_national_comparison} than national averages.\n\n"
+    "- State-level immunization coverage in {state_title} for key childhood vaccines, such as DTaP and MMR, is {label_national_comparison} national averages.\n\n"
   ),
   sentence_median_comparison,
   glue(
