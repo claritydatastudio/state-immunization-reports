@@ -21,10 +21,8 @@ execute:
 #| output: false
 library(tidyverse)
 library(glue)
-library(tigris)
 library(sf)
 library(janitor)
-library(tidycensus)
 library(showtext)
 
 source("R/charts.R")
