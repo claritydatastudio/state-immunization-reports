@@ -1,3 +1,4 @@
+# Load Packages -----------------------------------------------------------
 library(quarto)
 library(glue)
 library(tidyverse)
@@ -6,6 +7,7 @@ library(fs)
 library(xfun)
 library(googledrive)
 
+# Load Data ---------------------------------------------------------------
 states_flags <- list.files(
     path = "assets/flags",
     pattern = "\\.svg$",
@@ -14,6 +16,7 @@ states_flags <- list.files(
 states <- tools::file_path_sans_ext(basename(states_flags))
 states <- states[states != "puerto_rico"] # remove for now
 
+# Create State QMDs --------------------------------------------------------
 if (dir_exists("documents")) {
     print("Deleting documents/ and reports/")
     dir_delete("documents")
@@ -31,6 +34,7 @@ create_state_qmd <- function(state) {
 }
 walk(states, create_state_qmd)
 
+# Copy Assets -------------------------------------------------------------
 file_copy(
     path = "assets/coins.svg",
     new_path = "documents/assets/coins.svg"
@@ -64,6 +68,7 @@ file_copy(
     new_path = "documents/charts.R"
 )
 
+# Edit Parameters YAML ---------------------------------------------------
 change_parameters_yaml <- function(state) {
     gsub_file(
         file = str_glue("documents/{state}.qmd"),
@@ -73,6 +78,7 @@ change_parameters_yaml <- function(state) {
 }
 walk(states, change_parameters_yaml)
 
+# Edit Path Source ---------------------------------------------------------
 change_path_source <- function(state) {
     gsub_file(
         file = str_glue("documents/{state}.qmd"),
@@ -82,6 +88,7 @@ change_path_source <- function(state) {
 }
 walk(states, change_path_source)
 
+# Edit Path Data -----------------------------------------------------------
 change_path_data <- function(state) {
     gsub_file(
         file = str_glue("documents/{state}.qmd"),
@@ -92,8 +99,10 @@ change_path_data <- function(state) {
 
 walk(states, change_path_data)
 
+# Render Reports -----------------------------------------------------------
 walk(str_glue("documents/{states}.qmd"), quarto_render)
 
+# Move Reports -------------------------------------------------------------
 all_reports <- dir_ls(path = "documents", regexp = ".pdf")
 
 file_move(
@@ -101,6 +110,7 @@ file_move(
     new_path = "reports"
 )
 
+# Upload Reports -----------------------------------------------------------
 if (str_detect(Sys.getenv("GOOGLE_DRIVE_EMAIL"), "rfortherestofus.com")) {
     drive_auth(Sys.getenv("GOOGLE_DRIVE_EMAIL"))
 
