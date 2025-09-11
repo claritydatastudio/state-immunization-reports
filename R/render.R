@@ -7,6 +7,11 @@ library(fs)
 library(xfun)
 library(googledrive)
 
+
+# Import Data ------------------------------------------------------------
+source("R/import-data.R")
+
+
 # Load Data ---------------------------------------------------------------
 states_flags <- list.files(
     path = "assets/flags",
