@@ -237,6 +237,8 @@ state_policies |>
 
 # Census Data ------------------------------------------------------------
 
+# census_api_key(Sys.getenv("TIDYCENSUS_API_KEY"), install = FALSE)
+
 # library(tidycensus)
 
 # population_by_state <-

@@ -27,7 +27,29 @@ The `data-clean` folder holds all clean data:
 - `universal_purchase_final.csv` presents data on a state's participation in the 'Universal Vaccine Purchase Program'
 - `state_policies_final.csv` has data on state level immunization related policies that could strengthen or weaken vaccine safety nets.
 
-The CSV files in the `data-clean` folder are used to generate state-level immunization reports for all 50 states, the District of Columbia, and Puerto Rico.
+The CSV files in the `data-clean` folder are used to generate state-level
+immunization reports for all 50 states, the District of Columbia, and Puerto
+Rico.
+
+## How to run the reports
+
+Please ensure you have the latest version of Quarto. Download and install it
+from the [Quarto website](https://quarto.org/docs/get-started/).
+
+To generate all of the reports, run the `R/render.R` file. You will need to
+first install several packages to make everything work. You can do that by
+running this code in the console:
+
+```
+install.packages(c("quarto", "glue", "tidyverse", "here", "fs", "xfun", "googledrive", "janitor", "sf", "ggfx"))
+```
+
+You also need to have the Gentona (a paid font made available to JHU staff) and
+[Bitter](https://fonts.google.com/specimen/Bitter) fonts installed on your
+computer for everything to work properly. 
+
+If you are on a Mac, you may need to install [XQuartz](https://www.xquartz.org/) so that the plots will
+render correctly.
 
 ## How the report works
 
