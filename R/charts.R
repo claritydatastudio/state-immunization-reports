@@ -638,7 +638,7 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
       expand = expansion(mult = c(0, 0.12))
     ) +
     coord_cartesian(clip = "off") +
-    labs(title = glue::glue("Vaccination in {state_name} Over Time")) +
+    labs(title = glue::glue("Vaccination in {state_name} over time")) +
     theme_minimal() +
     theme(
       panel.grid = element_blank(),
