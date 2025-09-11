@@ -252,7 +252,7 @@ print(glue(
 cat("\n\n")
 cat(
   glue(
-    "- State-level immunization coverage in XX {state_title} for MMR vaccination is {label_national_comparison} national averages\n\n"
+    "- State-level immunization coverage in {state_title} for MMR vaccination is {label_national_comparison} national averages\n\n"
   ),
   sentence_median_comparison,
   glue(
