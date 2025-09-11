@@ -197,11 +197,11 @@ dtap_line_df <- dtap_coverage_final |>
 
 ```{r}
 #| output: asis
-is_above_national_comparison <- df_dtap |>
-  filter(geography %in% c(state_title, "United States")) |>
+is_above_national_comparison <- df_mmr |>
+  filter(geography %in% c(state_title, "U.S. Median")) |>
   summarise(
     higher_than_us = estimate_percent[geography == state_title] >
-      estimate_percent[geography == "United States"]
+      estimate_percent[geography == "U.S. Median"]
   ) |>
   pull(higher_than_us)
 if (is_above_national_comparison) {
