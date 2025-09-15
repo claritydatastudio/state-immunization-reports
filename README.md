@@ -51,6 +51,8 @@ computer for everything to work properly.
 If you are on a Mac, you may need to install [XQuartz](https://www.xquartz.org/) so that the plots will
 render correctly.
 
+You can see the recording of the call where we rendered all reports [here](https://muse.ai/vt/7mDGYES.
+
 ## How the report works
 
 The report file (`report.qmd`) relies on a Typst template that lives in `typst-template.typ` and uses many functions defined in the latest for easier styling. For instance, the following snippet adds a source section at the bottom right in the current element, and adds some vertical margin:
