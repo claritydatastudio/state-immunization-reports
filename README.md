@@ -41,7 +41,7 @@ first install several packages to make everything work. You can do that by
 running this code in the console:
 
 ```
-install.packages(c("quarto", "glue", "tidyverse", "here", "fs", "xfun", "googledrive", "janitor", "sf", "ggfx"))
+install.packages(c("quarto", "glue", "tidyverse", "here", "fs", "xfun", "googledrive", "janitor", "sf", "ggfx", "rvest", "chromote"))
 ```
 
 You also need to have the Gentona (a paid font made available to JHU staff) and
