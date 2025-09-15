@@ -246,6 +246,12 @@ n_cases_measles <- df |>
   filter(name == state_title) |>
   pull(total)
 
+if (n_cases_measles == 1) {
+  measles_cases_text <- "case"
+} else {
+  measles_cases_text <- "cases"
+}
+
 print(glue(
   "This brief illustrates the current status of childhood immunization in {state_title} and is intended to inform state-level policy decisions and priorities. Takeaways include:"
 ))
@@ -259,7 +265,7 @@ cat(
     "- State-level per capita public health spending is {label_spending_comparison} than the national average.\n\n"
   ),
   glue(
-    "- {state_title} has reported {n_cases_measles} cases of measles since January 1, 2025."
+    "- {state_title} has reported {n_cases_measles} {measles_cases_text} of measles since January 1, 2025."
   )
 )
 ```
