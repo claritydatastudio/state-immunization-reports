@@ -107,7 +107,6 @@ mmr_filtered_sorted <-
     )
   )
 
-
 # Export the dataset
 mmr_filtered_sorted |>
   write_csv("data-clean/mmr_coverage_final.csv")
