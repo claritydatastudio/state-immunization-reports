@@ -93,6 +93,21 @@ mmr_filtered_sorted <-
   bind_rows(mmr_filtered, wv_filtered, montana_filtered) |>
   arrange(geography, school_year)
 
+# For New Hampshire only
+  mmr_filtered_sorted <- mmr_filtered_sorted |>
+  mutate(estimate_percent = parse_number(as.character(estimate_percent))) |>
+  mutate(
+    estimate_percent = case_when(
+      geography == "New Hampshire" & school_year == "2024-25" ~ 95.4,
+      geography == "New Hampshire" & school_year == "2023-24" ~ 92.6,
+      geography == "New Hampshire" & school_year == "2022-23" ~ 95.0,
+      geography == "New Hampshire" & school_year == "2021-22" ~ 95.0,
+      geography == "New Hampshire" & school_year == "2020-21" ~ 0,
+      TRUE ~ estimate_percent
+    )
+  )
+
+
 # Export the dataset
 mmr_filtered_sorted |>
   write_csv("data-clean/mmr_coverage_final.csv")

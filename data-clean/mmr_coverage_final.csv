@@ -63,7 +63,7 @@ MMR,NA,States,Idaho,2021-22,83.9,23854,99.6,NA,NA,Census
 MMR,NA,States,Idaho,2022-23,81.3,23721,99.3,NA,NA,Census
 MMR,NA,States,Idaho,2023-24,79.6,22376,100,*,NA,Census
 MMR,NA,States,Idaho,2024-25,78.5,22242,99.5,NA,NA,Census
-MMR,NA,States,Illinois,2020-21,NR,NA,NA,NA,NA,Not Conducted
+MMR,NA,States,Illinois,2020-21,NA,NA,NA,NA,NA,Not Conducted
 MMR,NA,States,Illinois,2021-22,92.1,137699,100,*,NA,Census
 MMR,NA,States,Illinois,2022-23,91.7,135332,100,*,NA,Census
 MMR,NA,States,Illinois,2023-24,91.6,133578,100,*,NA,Census
@@ -148,11 +148,11 @@ MMR,NA,States,Nevada,2021-22,92.7,36855,99.2,NA,NA,"Census (pub.), vol. response
 MMR,NA,States,Nevada,2022-23,92.8,34333,89.1,NA,NA,"Vol. response (pub.), census (pvt.)"
 MMR,NA,States,Nevada,2023-24,91.9,31261,91.3,NA,NA,Census
 MMR,NA,States,Nevada,2024-25,91.3,33272,92.6,NA,NA,"Census (pub.), vol. response (prv.)"
-MMR,NA,States,New Hampshire,2020-21,90.8,10242,57,>=. §,NA,Voluntary response
-MMR,NA,States,New Hampshire,2021-22,88.7,12157,100,>=. §. *,NA,Census
-MMR,NA,States,New Hampshire,2022-23,89.4,11332,100,>=. §. *,NA,Census
-MMR,NA,States,New Hampshire,2023-24,89.2,11871,100,>=. §. *,NA,Census
-MMR,NA,States,New Hampshire,2024-25,89.2,11713,100,>=. *. §,NA,Census
+MMR,NA,States,New Hampshire,2020-21,0,10242,57,>=. §,NA,Voluntary response
+MMR,NA,States,New Hampshire,2021-22,95,12157,100,>=. §. *,NA,Census
+MMR,NA,States,New Hampshire,2022-23,95,11332,100,>=. §. *,NA,Census
+MMR,NA,States,New Hampshire,2023-24,92.6,11871,100,>=. §. *,NA,Census
+MMR,NA,States,New Hampshire,2024-25,95.4,11713,100,>=. *. §,NA,Census
 MMR,NA,States,New Jersey,2020-21,94.3,100144,100,>=.*,NA,Census
 MMR,NA,States,New Jersey,2021-22,94.1,104240,100,>=. §. *,NA,Census
 MMR,NA,States,New Jersey,2022-23,94.3,104468,100,>=. §. *,NA,Census
@@ -255,7 +255,7 @@ MMR,NA,States,Washington,2022-23,91.4,86284,97.9,§,NA,Census
 MMR,NA,States,Washington,2023-24,91.3,84053,97.2,§,NA,Census
 MMR,NA,States,Washington,2024-25,90.9,76756,97.9,NA,NA,Census
 MMR,NA,States,West Virginia,2019-20,98.2,17114,49.6,¶,NA,Voluntary response
-MMR,NA,States,West Virginia,2020-21,NR,NA,NA,NA,NA,Not Conducted
+MMR,NA,States,West Virginia,2020-21,NA,NA,NA,NA,NA,Not Conducted
 MMR,NA,States,West Virginia,2021-22,96.5,18070,85.5,‡. §,NA,Vol. response
 MMR,NA,States,West Virginia,2022-23,95.6,19175,86.1,>=. ‡. §,NA,"Vol. response (pub.), census (pvt.)"
 MMR,NA,States,West Virginia,2023-24,98.3,18261,82.8,‡. §,NA,Vol. response
