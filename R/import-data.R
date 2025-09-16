@@ -2,10 +2,29 @@
 
 library(tidyverse)
 library(janitor)
+library(rvest)
+library(chromote)
 
 # Measles -----------------------------------------------------------------
 
 # CSV comes from https://publichealth.jhu.edu/ivac/resources/us-measles-tracker
+
+# Get last updated date
+
+b <- ChromoteSession$new()
+b$Page$navigate("https://publichealth.jhu.edu/ivac/resources/us-measles-tracker")
+Sys.sleep(5) # Wait for JavaScript to load content
+
+date_text <- b$Runtime$evaluate(
+  "document.querySelector('#updateDate').textContent"
+)$result$value
+
+measles_cases_updated_date <-
+  date_text |>
+  str_remove("Updated ")
+
+measles_cases_updated_date |>
+  write_rds("data-clean/measles_cases_updated_date.rds")
 
 # Import- measles cases dataset
 
@@ -177,8 +196,6 @@ dtap_filtered_states |>
 # Vaccine Exemptions ------------------------------------------------------
 # CSV from NCSL's brief (https://www.ncsl.org/health/state-non-medical-exemptions-from-school-immunization-requirements)
 
-# library(rvest)
-#
 # vaccine_exemptions <-
 #   read_html("https://www.ncsl.org/health/state-non-medical-exemptions-from-school-immunization-requirements") |>
 #   html_table() |>

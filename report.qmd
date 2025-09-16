@@ -9,7 +9,6 @@ format:
          - typst-show.typ
 params:
    state: idaho
-   end_date: "September 1, 2025"
 execute:
   echo: false
   message: false
@@ -193,6 +192,9 @@ df_dtap <- left_join(
 
 dtap_line_df <- dtap_coverage_final |>
   select(geography, year, estimate_percent)
+
+measles_cases_updated_date <- 
+  read_rds("data-clean/measles_cases_updated_date.rds")
 ```
 
 ```{r}
@@ -246,6 +248,12 @@ n_cases_measles <- df |>
   filter(name == state_title) |>
   pull(total)
 
+if (n_cases_measles == 1) {
+  measles_cases_text <- "case"
+} else {
+  measles_cases_text <- "cases"
+}
+
 print(glue(
   "This brief illustrates the current status of childhood immunization in {state_title} and is intended to inform state-level policy decisions and priorities. Takeaways include:"
 ))
@@ -259,7 +267,7 @@ cat(
     "- State-level per capita public health spending is {label_spending_comparison} than the national average.\n\n"
   ),
   glue(
-    "- {state_title} has reported {n_cases_measles} cases of measles since January 1, 2025."
+    "- {state_title} has reported {n_cases_measles} {measles_cases_text} of measles since January 1, 2025."
   )
 )
 ```
@@ -649,7 +657,7 @@ writeLines(typst_code, "state_policies.typ")
 
 ```{r}
 text_content <- glue(
-  "Measles outbreaks can indicate insufficient vaccination coverage within a population. Disease may spread across state borders when vaccine coverage is low. The map below visualizes the number of measles cases reported in {state_title} and neighboring states between January 1, 2025 and {params$end_date}."
+  "Measles outbreaks can indicate insufficient vaccination coverage within a population. Disease may spread across state borders when vaccine coverage is low. The map below visualizes the number of measles cases reported in {state_title} and neighboring states between January 1, 2025 and {measles_cases_updated_date}."
 )
 ```
 
