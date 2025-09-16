@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-   state: idaho
+   state: kansas
 execute:
   echo: false
   message: false
@@ -200,10 +200,10 @@ measles_cases_updated_date <-
 ```{r}
 #| output: asis
 is_above_national_comparison <- df_mmr |>
-  filter(geography %in% c(state_title, "U.S. Median")) |>
+  filter(geography %in% c(state_title, "United States")) |>
   summarise(
     higher_than_us = estimate_percent[geography == state_title] >
-      estimate_percent[geography == "U.S. Median"]
+      estimate_percent[geography == "United States"]
   ) |>
   pull(higher_than_us)
 if (is_above_national_comparison) {
@@ -398,12 +398,12 @@ is_decreasing_yoy <- mmr_coverage_final |>
 
 is_lower_us <- mmr_coverage_final |>
   filter(
-    geography %in% c(state_title, "U.S. Median"),
+    geography %in% c(state_title, "United States"),
     school_year == "2024-25"
   ) |>
   summarise(
     lower_than_us = estimate_percent[geography == state_title] <
-      estimate_percent[geography == "U.S. Median"]
+      estimate_percent[geography == "United States"]
   ) |>
   pull(lower_than_us)
 
@@ -436,7 +436,7 @@ if (!(state_title %in% c("West Virginia", "Montana"))) {
   }
 
   text_content <- glue(
-    "In 2024, a {label_comparison_yoy} proportion of kindergarteners completed the measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year.Coverage in {state_title} {label_target} the HP2030 target of 95%."
+    "In 2024, a {label_comparison_yoy} proportion of kindergarteners completed the measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year. Coverage in {state_title} {label_target} the HP2030 target of 95%."
   )
 } else {
   text_content <- glue(
