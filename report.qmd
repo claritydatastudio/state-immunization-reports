@@ -260,11 +260,11 @@ print(glue(
 cat("\n\n")
 cat(
   glue(
-    "- State-level immunization coverage in {state_title} for MMR vaccination is {label_national_comparison} national averages\n\n"
+    "- State-level immunization coverage in {state_title} for MMR vaccination is {label_national_comparison} national levels.\n\n"
   ),
   sentence_median_comparison,
   glue(
-    "- State-level per capita public health spending is {label_spending_comparison} than the national average.\n\n"
+    "- State-level per capita public health spending is {label_spending_comparison} than the national rate.\n\n"
   ),
   glue(
     "- {state_title} has reported {n_cases_measles} {measles_cases_text} of measles since January 1, 2025."
@@ -285,7 +285,7 @@ cat(
 ```{r}
 #| output: asis
 print(glue(
-  "Maintaining sufficient vaccination coverage is critical for establishing community protection. The charts below demonstrate how coverage for two critical vaccines has changed over time in {state_title} and how it compares to neighboring states, national averages, and Healthy People 2030 (HP2030) targets."
+  "Maintaining sufficient vaccination coverage is critical for establishing community protection. The charts below demonstrate how coverage for two critical vaccines has changed over time in {state_title} and how it compares to neighboring states, national rates, and Healthy People 2030 (HP2030) targets."
 ))
 ```
 
@@ -348,7 +348,7 @@ if (is_above_us) {
 }
 
 text_content <- glue(
-  "In 2023, {label_yoy_comparison} 2-year-olds were fully vaccinated against diphtheria, tetanus, and pertussis (received all four doses of DTaP) in {state_title} compared to the previous year. {state_title} has {label_coverage_us} coverage than the U.S. median. Coverage in {state_title} is {label_target} the HP2030 target of 90%."
+  "In 2023, {label_yoy_comparison} 2-year-olds were fully vaccinated against diphtheria, tetanus, and pertussis (received all four doses of DTaP) in {state_title} compared to the previous year. Coverage in {state_title} is {label_target} the HP2030 target of 90%."
 )
 ```
 
@@ -436,7 +436,7 @@ if (!(state_title %in% c("West Virginia", "Montana"))) {
   }
 
   text_content <- glue(
-    "In 2024, a {label_comparison_yoy} proportion of kindergarteners received at least 1 dose of measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year. {state_title} has {label_coverage} coverage than the US median. Coverage in {state_title} {label_target} the HP2030 target of 95%."
+    "In 2024, a {label_comparison_yoy} proportion of kindergarteners completed the measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year.Coverage in {state_title} {label_target} the HP2030 target of 95%."
   )
 } else {
   text_content <- glue(
@@ -643,7 +643,7 @@ writeLines(typst_code, "state_policies.typ")
 ```{=typst}
 #let policies = read("state_policies.typ")
 #eval(policies) // convert a string into actual typst code
-#box(inset: 10pt)[#source("Source: AIM, LegiScan")]
+#box(inset: 10pt)[#source("Source: AIM, LegiScan, NCSL")]
 ```
 
 </div>
