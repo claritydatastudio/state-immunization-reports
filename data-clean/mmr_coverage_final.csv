@@ -133,7 +133,6 @@ MMR,NA,States,Montana,2017-18,93.2,12188,100,*,NA,Census
 MMR,NA,States,Montana,2018-19,93.3,12480,100,*,NA,Census
 MMR,NA,States,Montana,2019-20,93.6,12501,100,*,NA,Census
 MMR,NA,States,Montana,2020-21,92.9,11279,100,*,NA,Census
-MMR,NA,States,Montana,2020-21,92.9,11279,100,*,NA,Census
 MMR,NA,States,NY-City of New York,2020-21,97.4,91920,94.2,NA,NA,Census (public). voluntary response (private)
 MMR,NA,States,NY-City of New York,2021-22,97.3,82938,99.8,NA,NA,Census
 MMR,NA,States,NY-City of New York,2022-23,97.3,85379,97.6,NA,NA,"Census (pub.), vol. response (pvt.)"
@@ -230,11 +229,11 @@ MMR,NA,States,Texas,2021-22,94,389037,99.3,‡. §,NA,Census
 MMR,NA,States,Texas,2022-23,94.2,381680,98,‡. §,NA,Census
 MMR,NA,States,Texas,2023-24,94.3,381421,92.4,‡. §,NA,"Census (pub.), vol. response (prv.)"
 MMR,NA,States,Texas,2024-25,93.2,378860,97.3,‡. §,NA,"Census (pub.), vol. response (prv.)"
-MMR,NA,National,U.S. Median,2020-21,93.7,3510744,90,NA,NA,NA
-MMR,NA,National,U.S. Median,2021-22,92.9,3835130,92.2,NA,NA,NA
-MMR,NA,National,U.S. Median,2022-23,92.1,3832381,92.9,NA,NA,NA
-MMR,NA,National,U.S. Median,2023-24,92,3823506,93.1,NA,NA,NA
-MMR,NA,National,U.S. Median,2024-25,91.3,51319,99.5,NA,NA,NA
+MMR,NA,National,United States,2020-21,93.9,3510744,90.8,NA,NA,NA
+MMR,NA,National,United States,2021-22,93,3835130,92.2,NA,NA,NA
+MMR,NA,National,United States,2022-23,93.1,3832381,92.9,NA,NA,NA
+MMR,NA,National,United States,2023-24,92.7,3823506,93.1,NA,NA,NA
+MMR,NA,National,United States,2024-25,92.5,3785644,92.7,NA,NA,NA
 MMR,NA,States,Utah,2020-21,91.4,46247,100,*,NA,Census
 MMR,NA,States,Utah,2021-22,90,48995,100,*,NA,Census
 MMR,NA,States,Utah,2022-23,90,46635,100,*,NA,Census
