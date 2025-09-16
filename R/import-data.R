@@ -54,7 +54,7 @@ mmr_coverage <-
   read_csv("data-raw/mmr_coverage.csv") |>
   clean_names() |>
   filter(vaccine_exemption == "MMR") |>
-  filter(geography_type == "States" | geography == "U.S. Median")
+  filter(geography_type == "States" | geography == "United States")
 
 # Desired years
 target_years <- c(
@@ -73,13 +73,13 @@ mmr_filtered <-
   )
 
 # Additional target years for Montana
-montana_years <- c("2016-17", "2017-18", "2018-19", "2019-20", "2020-21")
+montana_years <- c("2016-17", "2017-18", "2018-19", "2019-20")
 
 montana_filtered <- mmr_coverage |>
   filter(
     school_year %in% montana_years,
     geography == "Montana"
-  )
+  ) 
 
 # Add West Virginia for 2019-20
 wv_filtered <- mmr_coverage |>
@@ -122,6 +122,7 @@ ny_filtered <-
   filter(
     school_year %in% c("2017-18", "2018-19"),
     geography == "New York"
+    
   )
 
 # Montana: 2019-20 and 2020-21
