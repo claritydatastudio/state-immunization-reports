@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-   state: idaho
+   state: New Hampshire
 execute:
   echo: false
   message: false
@@ -193,7 +193,7 @@ df_dtap <- left_join(
 dtap_line_df <- dtap_coverage_final |>
   select(geography, year, estimate_percent)
 
-measles_cases_updated_date <- 
+measles_cases_updated_date <-
   read_rds("data-clean/measles_cases_updated_date.rds")
 ```
 
@@ -238,6 +238,14 @@ if (
   )
 }
 
+if (state_title == "New Hampshire") {
+  sentence_mmr <- ""
+} else {
+  sentence_mmr <- glue(
+    "- State-level immunization coverage in {state_title} for MMR vaccination is {label_national_comparison} national averages\n\n"
+  )
+}
+
 if (spending_state >= spending_us) {
   label_spending_comparison <- "higher"
 } else {
@@ -259,9 +267,7 @@ print(glue(
 ))
 cat("\n\n")
 cat(
-  glue(
-    "- State-level immunization coverage in {state_title} for MMR vaccination is {label_national_comparison} national averages\n\n"
-  ),
+  sentence_mmr,
   sentence_median_comparison,
   glue(
     "- State-level per capita public health spending is {label_spending_comparison} than the national average.\n\n"
@@ -367,8 +373,16 @@ text_content <- glue(
 
 <div style="background-color: #F8F8F8;">
 
+```{r}
+if (state_title == "New Hampshire") {
+  chart_title <- "Proportion of childcare attendees protected with MMR vaccines"
+} else {
+  chart_title <- "Proportion of kindergartners protected with MMR vaccines"
+}
+```
+
 ```{=typst}
-#chart-title("Proportion of kindergartners protected with MMR vaccines")
+#chart-title("`r chart_title`")
 ```
 
 ::: {layout="[[1,1]]"}
@@ -416,7 +430,15 @@ value <- mmr_coverage_final |>
 is_below_target <- value < 95
 
 # some states have some missing data which prevent us to display default text
-if (!(state_title %in% c("West Virginia", "Montana"))) {
+if (state_title %in% c("West Virginia", "Montana")) {
+  text_content <- glue(
+    "{state_title} does not have complete data for all school years, which prevents us from showcasing them here."
+  )
+  source <- "Source: SchoolVaxView"
+} else if (state_title == "New Hampshire") {
+  text_content <- "Measles, mumps, and rubella (MMR)  vaccination coverage among kindergartners is not available for New Hampshire. The coverage presented in the chart above represents the percentage of 19-59-month-olds in childcare who have received MMR vaccination."
+  source <- "Source: New Hampshire DHHS"
+} else {
   if (is_decreasing_yoy) {
     label_comparison_yoy <- "lower"
   } else {
@@ -438,17 +460,14 @@ if (!(state_title %in% c("West Virginia", "Montana"))) {
   text_content <- glue(
     "In 2024, a {label_comparison_yoy} proportion of kindergarteners received at least 1 dose of measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year. {state_title} has {label_coverage} coverage than the US median. Coverage in {state_title} {label_target} the HP2030 target of 95%."
   )
-} else {
-  text_content <- glue(
-    "{state_title} does not have complete data for all school years, which prevents us from showcasing them here."
-  )
+  source <- "Source: SchoolVaxView"
 }
 ```
 
 ```{=typst}
 #box(inset: 10pt)[
   #text("`r text_content`")
-  #source("Source: SchoolVaxView")
+  #source("`r source`")
 ]
 ```
 
@@ -716,6 +735,14 @@ df |> measles_map(state_title)
 
 ## DATA SOURCES
 
+```{r}
+if (state_title == "New Hampshire") {
+  source_mmr <- "- New Hampshire Department of Health and Human Services. Immunization Guidance for Child Care. Retrieved from https://www.dhhs.nh.gov/programs-services/disease-prevention/nh-immunization-program/immunization-guidance-child-care. Accessed September 2025"
+} else {
+  source_mmr <- "- MMR: CDC, SchoolVaxView Interactive! https://www.cdc.gov/schoolvaxview/data/index.html. MMR, States, School Years 2021-22, 2022-23, 2023-24, 2024-25. Updated July 2025."
+}
+```
+
 ```{=typst}
 #show list: set block(spacing: 0.5em) // reduce line height
 #set text(size: 9pt) // reduce all text font size
@@ -724,7 +751,11 @@ df |> measles_map(state_title)
 Vaccination coverage:
 
 - DTaP: CDC, ChildVaxView Interactive! https://www.cdc.gov/childvaxview/about/interactive-reports.html. DTaP, ≥ 4 Doses, States/Local Areas, Birth Years/Cohorts 2017–2021, Age 24 months. Updated Aug 2024. 
-MMR: CDC, SchoolVaxView Interactive! https://www.cdc.gov/schoolvaxview/data/index.html. MMR, States, School Years 2021-22, 2022-23, 2023-24, 2024-25. Updated July 2025.
+
+```{r}
+#| output: asis
+cat(source_mmr, "\n\n")
+```
 
 Vaccination exemptions:
 
