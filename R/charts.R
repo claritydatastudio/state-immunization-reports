@@ -335,39 +335,49 @@ measles_map <- function(df, state) {
 #-----------------------------------------------------------------------------
 
 mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
-  neighboring_data <- get_neighboring_states(df, state_name) |>
-    st_drop_geometry() |>
-    filter(name != state_name) |>
-    distinct(name) |> # ensure unique names pre-join
-    left_join(df_mmr, by = c("name" = "geography")) |>
-    filter(!is.na(total_population)) |>
-    distinct(name, .keep_all = TRUE) |> # ensure unique names post-join
-    slice_max(total_population, n = 2) |>
-    pull(name) |>
-    unique() # neighbors vector must be unique
+  if (state_name == "New Hampshire") {
+    chart_data <- df_mmr |>
+      filter(geography == state_name) |>
+      mutate(
+        estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
+        geography = factor(geography),
+        bar_fill = "#68ACE5",
+        txt_col = "white"
+      )
+  } else {
+    neighboring_data <- get_neighboring_states(df, state_name) |>
+      st_drop_geometry() |>
+      filter(name != state_name) |>
+      distinct(name) |> # ensure unique names pre-join
+      left_join(df_mmr, by = c("name" = "geography")) |>
+      filter(!is.na(total_population)) |>
+      distinct(name, .keep_all = TRUE) |> # ensure unique names post-join
+      slice_max(total_population, n = 2) |>
+      pull(name) |>
+      unique() # neighbors vector must be unique
 
-  chart_data <- df_mmr |>
-    mutate(
-      geography = ifelse(geography == "U.S. Median", "United States", geography)
-    ) |>
-    filter(geography %in% c(state_name, neighboring_data, "United States")) |>
-    mutate(
-      estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
-      geography = factor(
-        geography,
-        levels = unique(c("United States", neighboring_data, state_name)) # <-- no dups
-      ),
-      bar_fill = ifelse(geography == state_name, "#68ACE5", NA_character_),
-      txt_col = ifelse(geography == state_name, "white", "black")
-    )
+    chart_data <- df_mmr |>
+      mutate(
+        geography = ifelse(
+          geography == "U.S. Median",
+          "United States",
+          geography
+        )
+      ) |>
+      filter(geography %in% c(state_name, neighboring_data, "United States")) |>
+      mutate(
+        estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
+        geography = factor(
+          geography,
+          levels = unique(c("United States", neighboring_data, state_name)) # <-- no dups
+        ),
+        bar_fill = ifelse(geography == state_name, "#68ACE5", NA_character_),
+        txt_col = ifelse(geography == state_name, "white", "black")
+      )
+  }
 
-  ggplot(chart_data, aes(x = estimate_percent, y = geography)) +
-    geom_vline(
-      xintercept = 95,
-      linetype = "dashed",
-      color = "gray30",
-      alpha = 0.8
-    ) +
+  # Create base plot
+  p <- ggplot(chart_data, aes(x = estimate_percent, y = geography)) +
     geom_col(
       aes(fill = bar_fill),
       width = 0.5,
@@ -389,18 +399,6 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       family = "Gentona"
     ) +
     scale_color_identity() +
-    annotate(
-      "text",
-      x = 91,
-      y = 0.2,
-      label = "HP2030 Target: 95%",
-      vjust = -0.7,
-      hjust = 0.9,
-      size = 2.5,
-      color = "gray30",
-      family = "Gentona",
-      fontface = "bold"
-    ) +
     scale_x_continuous(
       limits = c(0, 100),
       breaks = seq(0, 100, 20),
@@ -419,6 +417,28 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       ),
       plot.margin = margin(t = 20, r = 20, b = 20, l = 20)
     )
+
+  p <- p +
+    geom_vline(
+      xintercept = 95,
+      linetype = "dashed",
+      color = "gray30",
+      alpha = 0.8
+    ) +
+    annotate(
+      "text",
+      x = 91,
+      y = 0.2,
+      label = "HP2030 Target: 95%",
+      vjust = -0.7,
+      hjust = 0.9,
+      size = 2.5,
+      color = "gray30",
+      family = "Gentona",
+      fontface = "bold"
+    )
+
+  return(p)
 }
 
 #------------------------------------------------------------------------------
@@ -434,19 +454,12 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
         levels = unique(school_year[order(school_year)])
       )
     )
-
   n_x <- nlevels(state_data$school_year)
   if (nrow(state_data) == 0) {
     stop(paste("No data with present values for state:", state_name))
   }
 
-  ggplot(state_data, aes(x = school_year, y = estimate_percent)) +
-    geom_hline(
-      yintercept = 95,
-      linetype = "dashed",
-      color = "gray30",
-      alpha = 0.8
-    ) +
+  p <- ggplot(state_data, aes(x = school_year, y = estimate_percent)) +
     geom_col(fill = "#68ACE5", width = 0.5) +
     geom_text(
       aes(
@@ -459,25 +472,12 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
       family = "Gentona",
       size = 3
     ) +
-    annotate(
-      "text",
-      x = n_x + 0.2,
-      y = 94,
-      label = "HP2030 Target: 95%",
-      family = "Gentona",
-      size = 3,
-      color = "gray30",
-      fontface = "bold",
-      hjust = 0,
-      vjust = -1.5
-    ) +
     scale_y_continuous(
       breaks = seq(0, 100, 25),
       labels = function(x) paste0(x, "%"),
       limits = c(0, 100),
       expand = expansion(mult = c(0, 0.12))
     ) +
-    coord_cartesian(clip = "off") +
     labs(title = glue::glue("Vaccination in {state_name} over time")) +
     theme_minimal() +
     theme(
@@ -486,8 +486,37 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
       axis.text.x = element_text(size = 10, family = "Gentona"),
       axis.text.y = element_text(size = 10, family = "Gentona"),
       axis.title = element_blank(),
-      plot.margin = margin(t = 20, r = 60, b = 20, l = 20)
+      plot.margin = if (state_name == "New Hampshire") {
+        margin(t = 20, r = 20, b = 20, l = 20)
+      } else {
+        margin(t = 20, r = 60, b = 20, l = 20)
+      }
     )
+
+  if (state_name != "New Hampshire") {
+    p <- p +
+      geom_hline(
+        yintercept = 95,
+        linetype = "dashed",
+        color = "gray30",
+        alpha = 0.8
+      ) +
+      annotate(
+        "text",
+        x = n_x + 0.2,
+        y = 94,
+        label = "HP2030 Target: 95%",
+        family = "Gentona",
+        size = 3,
+        color = "gray30",
+        fontface = "bold",
+        hjust = 0,
+        vjust = -1.5
+      ) +
+      coord_cartesian(clip = "off")
+  }
+
+  return(p)
 }
 
 #---------------------------------------------------------------------------------------
