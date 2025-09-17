@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-   state: kansas
+   state: new hampshire
 execute:
   echo: false
   message: false
