@@ -321,16 +321,11 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       unique() # neighbors vector must be unique
 
     chart_data <- df_mmr |>
-      mutate(
-        geography = ifelse(
-          geography == "U.S. Median",
-          "United States",
-          geography
-        )
-      ) |>
+     
       filter(geography %in% c(state_name, neighboring_data, "United States")) |>
       mutate(
         estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
+        label_pct = janitor::round_half_up(estimate_percent, 0),
         geography = factor(
           geography,
           levels = unique(c("United States", neighboring_data, state_name)) # <-- no dups
@@ -350,7 +345,7 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
     ) +
     scale_fill_identity() +
     geom_text(
-      aes(label = paste0(round(estimate_percent), "%"), color = txt_col),
+      aes(label = paste0(round(label_pct), "%"), color = txt_col),
       hjust = 1.5,
       size = 4,
       fontface = "bold",
