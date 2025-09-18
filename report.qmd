@@ -478,7 +478,7 @@ if (state_title %in% c("West Virginia", "Montana")) {
   }
 
   text_content <- glue(
-    "In 2024, {label_yoy_comparison} proportion of kindergarteners completed the measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year. Coverage in {state_title} {label_target} the HP2030 target of 95%."
+    "In 2024, {label_yoy_comparison} proportion of kindergarteners completed the measles, mumps, and rubella (MMR) vaccine series in {state_title} compared to the previous year. Coverage in {state_title} {label_target} the HP2030 target of 95%."
   )
   source <- "Source: SchoolVaxView"
 }
