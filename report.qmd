@@ -205,7 +205,7 @@ vals_state <- vals |> filter(geography == state_title) |> pull(estimate_percent)
 vals_national <- vals |>
   filter(geography == "United States") |>
   pull(estimate_percent)
-diff <- round(vals_national - vals_state)
+diff <- round(vals_state - vals_national)
 
 if (diff > 0) {
   label_national_comparison <- "above"
