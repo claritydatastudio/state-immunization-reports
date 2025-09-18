@@ -200,7 +200,6 @@ measles_cases_updated_date <-
 ```{r}
 #| output: asis
 round0 <- function(x) floor(as.numeric(x) + 0.5)
-
 vals <- df_mmr |>
   dplyr::filter(geography %in% c(state_title, "United States")) |>
   dplyr::mutate(estimate_percent = suppressWarnings(as.numeric(estimate_percent)))
@@ -512,7 +511,14 @@ if (state_title %in% c("West Virginia", "Montana")) {
 ```{r}
 if (
   !(state_title %in%
-    c("Maine", "West Virginia", "Puerto Rico", "New York", "California"))
+    c(
+      "Maine",
+      "West Virginia",
+      "Puerto Rico",
+      "New York",
+      "California",
+      "Connecticut"
+    ))
 ) {
   variation <- (third_box - third_box_before) / third_box_before
   if (abs(variation) <= 0.1) {
