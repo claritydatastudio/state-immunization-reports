@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-  state: maine
+  state: michigan
 execute:
   echo: false
   message: false
@@ -199,21 +199,23 @@ measles_cases_updated_date <-
 
 ```{r}
 #| output: asis
-vals <- df_mmr |>
-  filter(geography %in% c(state_title, "United States"))
-vals_state <- vals |> filter(geography == state_title) |> pull(estimate_percent)
-vals_national <- vals |>
-  filter(geography == "United States") |>
-  pull(estimate_percent)
-diff <- round(vals_state - vals_national)
+round0 <- function(x) floor(as.numeric(x) + 0.5)
 
-if (diff > 0) {
-  label_national_comparison <- "above"
-} else if (diff < 0) {
-  label_national_comparison <- "below"
-} else {
-  label_national_comparison <- "similar to"
-}
+vals <- df_mmr |>
+  dplyr::filter(geography %in% c(state_title, "United States")) |>
+  dplyr::mutate(estimate_percent = suppressWarnings(as.numeric(estimate_percent)))
+
+vals_state    <- vals |> dplyr::filter(geography == state_title) |> dplyr::pull(estimate_percent)
+vals_national <- vals |> dplyr::filter(geography == "United States") |> dplyr::pull(estimate_percent)
+
+# 1) State vs national — if rounded values match, say "similar to"
+st_r <- round0(vals_state)
+us_r <- round0(vals_national)
+label_national_comparison <-
+  if (is.na(st_r) || is.na(us_r)) "similar to" else
+  if (st_r > us_r) "above" else
+  if (st_r < us_r) "below" else
+  "similar to"
 
 # some states have some missing data here
 if (
