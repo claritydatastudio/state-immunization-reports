@@ -302,6 +302,7 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       filter(geography == state_name) |>
       mutate(
         estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
+        label_pct = janitor::round_half_up(estimate_percent, 0),
         geography = factor(geography),
         bar_fill = "#68ACE5",
         txt_col = "white"
