@@ -8,15 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-   state: idaho
-=======
-   state: kansas
->>>>>>> Stashed changes
-=======
-   state: maine
->>>>>>> 02d43adba335f13a443dc53c492f19ac48105485
+state: maine
 execute:
   echo: false
   message: false
