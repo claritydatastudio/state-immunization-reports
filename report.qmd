@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-  state: maine
+  state: connecticut
 execute:
   echo: false
   message: false
@@ -207,9 +207,9 @@ vals_national <- vals |>
   pull(estimate_percent)
 diff <- round(vals_national - vals_state)
 
-if (diff > 0) {
+if (diff < 0) {
   label_national_comparison <- "above"
-} else if (diff < 0) {
+} else if (diff > 0) {
   label_national_comparison <- "below"
 } else {
   label_national_comparison <- "similar to"
@@ -510,7 +510,14 @@ if (state_title %in% c("West Virginia", "Montana")) {
 ```{r}
 if (
   !(state_title %in%
-    c("Maine", "West Virginia", "Puerto Rico", "New York", "California"))
+    c(
+      "Maine",
+      "West Virginia",
+      "Puerto Rico",
+      "New York",
+      "California",
+      "Connecticut"
+    ))
 ) {
   variation <- (third_box - third_box_before) / third_box_before
   if (abs(variation) <= 0.1) {
