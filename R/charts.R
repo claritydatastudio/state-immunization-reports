@@ -2,26 +2,8 @@ library(tidyverse)
 library(sf)
 library(janitor)
 library(ggfx)
-
-
-pal <- c(
-  "#002D72",
-  "#68ACE5",
-  "#FF6900",
-  "#A7BCD6",
-  "#FF9E1B",
-  "#E5E2E0",
-  "#6E6C6F",
-  "#4A484C",
-  "#E0EEF9",
-  "#FFE1CC"
-)
-
-
-# Measles cases map ------------------------------------------------------
 library(tigris)
-library(tidyverse)
-library(janitor)
+
 
 m_pal <- c(
   "0" = "#B8B8B8", # gray for zero cases
@@ -89,54 +71,6 @@ michigan_detailed_cache <- counties("MI", cb = TRUE) |>
   filter(stusps == "MI") |>
   summarize()
 
-
-# -------------------------------------------------------------------
-# Helpers
-# -------------------------------------------------------------------
-get_nearest_states <- function(state, k = 5, pool) {
-  target <- pool |> filter(name == state)
-  others <- pool |> filter(name != state)
-
-  dmat <- st_distance(target, others)
-
-  others |>
-    mutate(dist_m = as.numeric(dmat[1, ])) |>
-    slice_min(dist_m, n = k)
-}
-
-get_neighboring_states <- function(
-  df,
-  state,
-  k_nearest = 5,
-  min_neighbors = 2
-) {
-  single_state <- df |> filter(name == state)
-
-  if (state %in% c("Alaska", "Hawaii", "Puerto Rico")) {
-    result <- bind_rows(
-      single_state,
-      get_nearest_states(state, k = k_nearest, pool = df)
-    )
-  } else {
-    touching_neighbors <- df |>
-      filter(sf::st_touches(geometry, single_state$geometry, sparse = FALSE)[,
-        1
-      ])
-
-    if (nrow(touching_neighbors) < min_neighbors) {
-      needed <- min_neighbors - nrow(touching_neighbors)
-      nearest_states <- get_nearest_states(state, k = needed + 2, pool = df)
-
-      result <- bind_rows(single_state, touching_neighbors, nearest_states) |>
-        distinct(name, .keep_all = TRUE)
-    } else {
-      result <- bind_rows(single_state, touching_neighbors)
-    }
-  }
-
-  result |> distinct(name, .keep_all = TRUE)
-}
-
 # -------------------------------------------------------------------
 # Main map
 # df must have columns: name (state), total (cases), geometry (sfc)
@@ -167,11 +101,38 @@ measles_map <- function(df, state) {
     other_states <- other_states |>
       st_cast("POLYGON") |>
       group_by(name) |>
-      mutate(area = sf::st_area(geometry)) |>
-      slice_max(area, n = 1) |>
-      ungroup() |>
-      select(-area) |>
-      mutate(geometry = sf::st_simplify(geometry, dTolerance = 1000))
+      mutate(area = sf::st_area(geometry))
+
+    # Special handling for Hawaii - keep all islands, not just the largest
+    hawaii_data <- other_states |> filter(name == "Hawaii")
+    non_hawaii_data <- other_states |> filter(name != "Hawaii")
+
+    # For Hawaii, keep all polygons but simplify gently
+    if (nrow(hawaii_data) > 0) {
+      hawaii_data <- hawaii_data |>
+        ungroup() |>
+        select(-area) |>
+        mutate(
+          geometry = sf::st_simplify(
+            geometry,
+            dTolerance = 100,
+            preserveTopology = TRUE
+          )
+        ) |>
+        group_by(name) |>
+        summarize(total = first(total), .groups = "drop")
+    }
+
+    # For non-Hawaii states, keep largest polygon only
+    if (nrow(non_hawaii_data) > 0) {
+      non_hawaii_data <- non_hawaii_data |>
+        slice_max(area, n = 1) |>
+        ungroup() |>
+        select(-area) |>
+        mutate(geometry = sf::st_simplify(geometry, dTolerance = 1000))
+    }
+
+    other_states <- bind_rows(hawaii_data, non_hawaii_data)
   }
 
   df_plot <- bind_rows(michigan_data, other_states) |>
