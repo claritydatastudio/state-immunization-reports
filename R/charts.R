@@ -337,25 +337,34 @@ measles_map <- function(df, state) {
 mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
   if (state_name == "New Hampshire") {
     chart_data <- df_mmr |>
-      filter(geography == state_name) |>
+      mutate(
+        geography = ifelse(
+          geography == "U.S. Median",
+          "United States",
+          geography
+        )
+      ) |>
+      filter(geography %in% c(state_name, "United States")) |>
       mutate(
         estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
-        geography = factor(geography),
-        bar_fill = "#68ACE5",
-        txt_col = "white"
+        geography = factor(
+          geography,
+          levels = c("United States", state_name)
+        ),
+        bar_fill = ifelse(geography == state_name, "#68ACE5", NA_character_),
+        txt_col = ifelse(geography == state_name, "white", "black")
       )
   } else {
     neighboring_data <- get_neighboring_states(df, state_name) |>
       st_drop_geometry() |>
       filter(name != state_name) |>
-      distinct(name) |> # ensure unique names pre-join
+      distinct(name) |>
       left_join(df_mmr, by = c("name" = "geography")) |>
       filter(!is.na(total_population)) |>
-      distinct(name, .keep_all = TRUE) |> # ensure unique names post-join
+      distinct(name, .keep_all = TRUE) |>
       slice_max(total_population, n = 2) |>
       pull(name) |>
-      unique() # neighbors vector must be unique
-
+      unique()
     chart_data <- df_mmr |>
       mutate(
         geography = ifelse(
@@ -369,14 +378,13 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
         estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
         geography = factor(
           geography,
-          levels = unique(c("United States", neighboring_data, state_name)) # <-- no dups
+          levels = unique(c("United States", neighboring_data, state_name))
         ),
         bar_fill = ifelse(geography == state_name, "#68ACE5", NA_character_),
         txt_col = ifelse(geography == state_name, "white", "black")
       )
   }
 
-  # Create base plot
   p <- ggplot(chart_data, aes(x = estimate_percent, y = geography)) +
     geom_col(
       aes(fill = bar_fill),
@@ -440,14 +448,13 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
 
   return(p)
 }
-
 #------------------------------------------------------------------------------
 
 mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
   state_data <- mmr_line_df |>
     filter(geography == state_name) |>
     mutate(estimate_percent = suppressWarnings(as.numeric(estimate_percent))) |>
-    filter(is.finite(estimate_percent)) |>
+    filter(is.finite(estimate_percent) & estimate_percent > 0) |>
     mutate(
       school_year = factor(
         school_year,
@@ -459,6 +466,7 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
     stop(paste("No data with present values for state:", state_name))
   }
 
+  # Create base plot
   p <- ggplot(state_data, aes(x = school_year, y = estimate_percent)) +
     geom_col(fill = "#68ACE5", width = 0.5) +
     geom_text(
@@ -493,6 +501,7 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
       }
     )
 
+  # Add target line and label only if state is NOT New Hampshire
   if (state_name != "New Hampshire") {
     p <- p +
       geom_hline(
