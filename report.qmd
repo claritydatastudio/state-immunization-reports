@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-   state: new hampshire
+   state: texas
 execute:
   echo: false
   message: false
@@ -199,17 +199,20 @@ measles_cases_updated_date <-
 
 ```{r}
 #| output: asis
-is_above_national_comparison <- df_mmr |>
-  filter(geography %in% c(state_title, "United States")) |>
-  summarise(
-    higher_than_us = estimate_percent[geography == state_title] >
-      estimate_percent[geography == "United States"]
-  ) |>
-  pull(higher_than_us)
-if (is_above_national_comparison) {
+vals <- df_mmr |>
+  filter(geography %in% c(state_title, "United States"))
+vals_state <- vals |> filter(geography == state_title) |> pull(estimate_percent)
+vals_national <- vals |>
+  filter(geography == "United States") |>
+  pull(estimate_percent)
+diff <- round(vals_national - vals_state)
+
+if (diff > 0) {
   label_national_comparison <- "above"
-} else {
+} else if (diff < 0) {
   label_national_comparison <- "below"
+} else {
+  label_national_comparison <- "similar to"
 }
 
 # some states have some missing data here
@@ -224,10 +227,12 @@ if (
       "Connecticut"
     ))
 ) {
-  if (third_box >= fourth_box) {
+  if (third_box > fourth_box) {
     label_median_comparison <- "higher"
-  } else {
+  } else if (third_box < fourth_box) {
     label_median_comparison <- "lower"
+  } else {
+    label_median_comparison <- "about the same"
   }
   sentence_median_comparison <- glue(
     "- {state_title}'s non-medical exemption rate among kindergartners is {label_median_comparison} than the U.S. median.\n\n"
@@ -315,18 +320,18 @@ df_dtap |> dtap_vaccination_comparison_chart(df, state_title)
 :::
 
 ```{r}
-is_above_yoy_comparison <- dtap_line_df |>
-  filter(geography == state_title, year %in% c(2022, 2023)) |>
-  summarise(
-    increase = estimate_percent[year == 2023] > estimate_percent[year == 2022]
-  ) |>
-  pull(increase) |>
-  round()
+vals <- dtap_line_df |>
+  filter(geography == state_title, year %in% c(2022, 2023))
+vals_2022 <- vals |> filter(year == 2022) |> pull(estimate_percent)
+vals_2023 <- vals |> filter(year == 2023) |> pull(estimate_percent)
+diff <- round(vals_2023 - vals_2022)
 
-if (is_above_yoy_comparison) {
+if (diff > 0) {
   label_yoy_comparison <- "more"
-} else {
+} else if (diff < 0) {
   label_yoy_comparison <- "fewer"
+} else {
+  label_yoy_comparison <- "approximately the same proportion of"
 }
 
 coverage_state <- dtap_line_df |>
@@ -410,6 +415,19 @@ is_decreasing_yoy <- mmr_coverage_final |>
   ) |>
   pull(decrease)
 
+vals <- mmr_coverage_final |>
+  filter(
+    geography == state_title,
+    school_year %in% c("2023-24", "2024-25")
+  )
+vals_2024_25 <- vals |>
+  filter(school_year == "2024-25") |>
+  pull(estimate_percent)
+vals_2023_24 <- vals |>
+  filter(school_year == "2023-24") |>
+  pull(estimate_percent)
+diff <- round(vals_2024_25 - vals_2023_24)
+
 is_lower_us <- mmr_coverage_final |>
   filter(
     geography %in% c(state_title, "United States"),
@@ -439,10 +457,12 @@ if (state_title %in% c("West Virginia", "Montana")) {
   text_content <- "Measles, mumps, and rubella (MMR)  vaccination coverage among kindergartners is not available for New Hampshire. The coverage presented in the chart above represents the percentage of 19-59-month-olds in childcare who have received MMR vaccination."
   source <- "Source: New Hampshire DHHS"
 } else {
-  if (is_decreasing_yoy) {
-    label_comparison_yoy <- "lower"
+  if (diff > 0) {
+    label_yoy_comparison <- "a higher"
+  } else if (diff < 0) {
+    label_yoy_comparison <- "a lower"
   } else {
-    label_comparison_yoy <- "higher"
+    label_yoy_comparison <- "approximately the same"
   }
 
   if (is_lower_us) {
@@ -458,7 +478,7 @@ if (state_title %in% c("West Virginia", "Montana")) {
   }
 
   text_content <- glue(
-    "In 2024, a {label_comparison_yoy} proportion of kindergarteners completed the measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year. Coverage in {state_title} {label_target} the HP2030 target of 95%."
+    "In 2024, {label_yoy_comparison} proportion of kindergarteners completed the measles, mumps, and rubella (MMR) vaccine in {state_title} compared to the previous year. Coverage in {state_title} {label_target} the HP2030 target of 95%."
   )
   source <- "Source: SchoolVaxView"
 }
@@ -626,7 +646,20 @@ if (state_title == "District of Columbia") {
 
 ## SUPPORT FOR IMMUNIZATION
 
-Strong policy commitment to immunization is critical for effective vaccination programs. The state legislature has recently introduced several bills that would affect state-wide childhood vaccination, a selection of which are described below. The arrows below indicate whether these bills would strengthen (↑) or weaken (↓) vaccine safety nets.
+```{r}
+#| output: asis
+if (nrow(state_policies) == 1) {
+  cat(
+    "The state legislature recently introduced a bill that would affect statewide childhood vaccination. The arrow below indicates whether the bill would strengthen (↑) or weaken (↓) vaccine safety nets.\n"
+  )
+} else {
+  cat(
+    "Strong policy commitment to immunization is critical for effective vaccination programs. The state legislature has recently introduced several bills that would affect state-wide childhood vaccination, a selection of which are described below. The arrows below indicate whether these bills would strengthen (↑) or weaken (↓) vaccine safety nets.\n"
+  )
+}
+```
+
+
 
 ```{r}
 # here we dynamically write Typst code,
