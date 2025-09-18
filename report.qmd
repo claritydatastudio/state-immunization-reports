@@ -8,8 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-
-  state: michigan
+state: michigan
 execute:
   echo: false
   message: false
