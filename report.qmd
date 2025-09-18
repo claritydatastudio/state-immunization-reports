@@ -547,9 +547,7 @@ if (
     heading_ad <- "Additional details on exemption requirements:"
   }
   third_box_label <- "NA"
-  text_content <- glue(
-    "{state_title} does not have complete data for all school years, which prevents us from showcasing them here."
-  )
+  text_content <- ""
 }
 ```
 
