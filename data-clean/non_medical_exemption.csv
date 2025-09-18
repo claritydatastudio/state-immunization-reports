@@ -67,9 +67,9 @@ Exemption,Non-Medical Exemption,States,Wisconsin,2024-25,6.3,61120,95.7,>=. ||||
 Exemption,Non-Medical Exemption,States,Wisconsin,2023-24,6.2,62028,98.2,>=. ||||. ¶¶,3833,Census
 Exemption,Non-Medical Exemption,States,Rhode Island,2024-25,1.7,10088,96.7,†,172,Census
 Exemption,Non-Medical Exemption,States,Rhode Island,2023-24,1.5,10539,97.8,†,159,Census
-Exemption,Non-Medical Exemption,States,Maine,2023-24,0.1,12087,93,NA,7,Census
-Exemption,Non-Medical Exemption,States,Connecticut,2024-25,0.1,30112,100,<. †,6,Census
-Exemption,Non-Medical Exemption,States,Connecticut,2023-24,0.1,36184,100,†,51,Census
+Exemption,Non-Medical Exemption,States,Maine,2023-24,NA,12087,93,NA,7,Census
+Exemption,Non-Medical Exemption,States,Connecticut,2024-25,NA,30112,100,<. †,6,Census
+Exemption,Non-Medical Exemption,States,Connecticut,2023-24,NA,36184,100,†,51,Census
 Exemption,Non-Medical Exemption,States,Virginia,2024-25,2.4,91453,98,†,2131,Census
 Exemption,Non-Medical Exemption,States,Virginia,2023-24,2.1,92633,100,†,1930,Stratified 2-stage cluster sample
 Exemption,Non-Medical Exemption,States,Ohio,2023-24,4,133716,94,||,5377,"Census (pub.), vol. response (prv.)"
@@ -97,12 +97,12 @@ Exemption,Non-Medical Exemption,States,New Jersey,2023-24,3.7,105408,100,†,392
 Exemption,Non-Medical Exemption,States,Massachusetts,2024-25,1.3,65581,100,†,870,Census
 Exemption,Non-Medical Exemption,States,Massachusetts,2023-24,1.2,65424,100,†,813,Census
 Exemption,Non-Medical Exemption,States,North Carolina,2024-25,3.1,124028,91,†,3803,"Census (pub.), vol. response (prv.)"
-Exemption,Non-Medical Exemption,States,New York,2017-18,1,226456,NA,†,2199,Census
-Exemption,Non-Medical Exemption,States,New York,2018-19,1.1,220495,NA,†,2447,Census
+Exemption,Non-Medical Exemption,States,New York,2017-18,NA,226456,NA,†,2199,Census
+Exemption,Non-Medical Exemption,States,New York,2018-19,NA,220495,NA,†,2447,Census
 Exemption,Non-Medical Exemption,States,Montana,2020-21,3.3,11279,100,†,376,Census
 Exemption,Non-Medical Exemption,States,Montana,2019-20,4,12501,NA,†,505,Census
-Exemption,Non-Medical Exemption,States,California,2016-17,0.6,575305,NA,||,3217,Census
-Exemption,Non-Medical Exemption,States,California,2015-16,2.4,593788,NA,NA,14008,Census
-Exemption,Non-Medical Exemption,States,Maine,2022-23,0.1,12403,93.9,NA,15,Census
+Exemption,Non-Medical Exemption,States,California,2016-17,NA,575305,NA,||,3217,Census
+Exemption,Non-Medical Exemption,States,California,2015-16,NA,593788,NA,NA,14008,Census
+Exemption,Non-Medical Exemption,States,Maine,2022-23,NA,12403,93.9,NA,15,Census
 Exemption,Non-Medical Exemption,States,West Virginia,2018-19,NA,19442,NA,†.‡.‡‡,NA,Voluntary response
 Exemption,Non-Medical Exemption,States,West Virginia,2019-20,NA,17114,NA,†.‡.‡‡,NA,Voluntary response

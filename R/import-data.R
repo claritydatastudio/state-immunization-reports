@@ -184,8 +184,13 @@ non_medical_exemptions <-
     wv_filtered
   )
 
+nm <- non_medical_exemptions
+targets <- c("New York","Maine","Connecticut","California")
+nm$estimate_percent[nm$geography %in% targets] <- NA_real_
+non_medical_exemptions <- nm
+
 # Export the dataset
-non_medical_exemptions |>
+nm |>
   write_csv("data-clean/non_medical_exemption.csv")
 
 # DTaP --------------------------------------------------------------------
