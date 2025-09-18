@@ -321,7 +321,6 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       unique() # neighbors vector must be unique
 
     chart_data <- df_mmr |>
-     
       filter(geography %in% c(state_name, neighboring_data, "United States")) |>
       mutate(
         estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
