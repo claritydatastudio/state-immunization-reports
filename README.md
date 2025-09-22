@@ -1,5 +1,9 @@
 # State Immunization Reports
 
+This repo contains code and data to generate state-level immunization monitoring
+briefs. Developed in conjunction with the Johns Hopkins International Vaccine
+Access Center (IVAC), you can see the final reports on the [IVAC website](https://publichealth.jhu.edu/ivac/monitoring-childhood-immunization-at-the-state-level).
+
 ## Data
 
 This repo has data on state-level immunization. The `data-raw` folder holds all raw data:
@@ -51,7 +55,7 @@ computer for everything to work properly.
 If you are on a Mac, you may need to install [XQuartz](https://www.xquartz.org/) so that the plots will
 render correctly.
 
-You can see the recording of the call where we rendered all reports [here](https://muse.ai/vt/7mDGYES.
+You can see the recording of the call where we rendered all reports [here](https://muse.ai/vt/7mDGYES).
 
 ## How the report works
 
