@@ -296,17 +296,10 @@ measles_map <- function(df, state) {
 #-----------------------------------------------------------------------------
 
 mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
-  # For New Hampshire, only show New Hampshire data
+  # For New Hampshire, no chart is shown here
+  # https://github.com/rfortherestofus/state-immunization-reports/issues/26#issuecomment-3324023259
   if (state_name == "New Hampshire") {
-    chart_data <- df_mmr |>
-      filter(geography == state_name) |>
-      mutate(
-        estimate_percent = suppressWarnings(as.numeric(estimate_percent)),
-        label_pct = janitor::round_half_up(estimate_percent, 0),
-        geography = factor(geography),
-        bar_fill = "#68ACE5",
-        txt_col = "white"
-      )
+    return(invisible())
   } else {
     # For other states, show neighboring states and US data
     neighboring_data <- get_neighboring_states(df, state_name) |>
