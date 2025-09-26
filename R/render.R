@@ -42,30 +42,37 @@ file_copy(
   path = "assets/coins.svg",
   new_path = "documents/assets/coins.svg"
 )
+
 file_copy(
   path = "assets/logo.png",
   new_path = "documents/assets/logo.png"
 )
+
 file_copy(
   path = "assets/down-arrow.png",
   new_path = "documents/assets/down-arrow.png"
 )
+
 file_copy(
   path = "assets/up-arrow.png",
   new_path = "documents/assets/up-arrow.png"
 )
+
 file_copy(
   path = "typst-template.typ",
   new_path = "documents/typst-template.typ"
 )
+
 file_copy(
   path = "typst-show.typ",
   new_path = "documents/typst-show.typ"
 )
+
 file_copy(
   path = states_flags,
   new_path = "documents/assets/flags"
 )
+
 file_copy(
   path = "R/charts.R",
   new_path = "documents/charts.R"
@@ -79,6 +86,7 @@ change_parameters_yaml <- function(state) {
     glue("state: ", gsub("_", " ", state))
   )
 }
+
 walk(states, change_parameters_yaml)
 
 # Edit Path Source ---------------------------------------------------------
@@ -92,6 +100,7 @@ change_path_source <- function(state) {
 walk(states, change_path_source)
 
 # Edit Path Data -----------------------------------------------------------
+
 change_path_data <- function(state) {
   gsub_file(
     file = str_glue("documents/{state}.qmd"),

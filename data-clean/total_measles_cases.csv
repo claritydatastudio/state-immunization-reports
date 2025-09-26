@@ -1,7 +1,7 @@
 state,total
 Alabama,1
 Alaska,3
-Arizona,34
+Arizona,52
 Arkansas,8
 California,20
 Colorado,27
@@ -9,10 +9,10 @@ Connecticut,0
 Delaware,0
 District of Columbia,1
 Florida,6
-Georgia,6
+Georgia,10
 Hawaii,2
-Idaho,7
-Illinois,10
+Idaho,9
+Illinois,11
 Indiana,9
 Iowa,8
 Kansas,90
@@ -22,16 +22,16 @@ Maine,0
 Maryland,3
 Massachusetts,0
 Michigan,27
-Minnesota,5
+Minnesota,8
 Mississippi,0
 Missouri,7
-Montana,31
+Montana,32
 Nebraska,1
 Nevada,0
 New Hampshire,0
 New Jersey,10
 New Mexico,100
-New York,21
+New York,23
 North Carolina,1
 North Dakota,36
 Ohio,38
@@ -42,10 +42,10 @@ Puerto Rico,0
 Rhode Island,1
 South Carolina,3
 South Dakota,12
-Tennessee,6
+Tennessee,7
 Texas,802
-U.S.,1474
-Utah,30
+U.S.,1520
+Utah,44
 Vermont,1
 Virginia,4
 Washington,11

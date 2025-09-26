@@ -12,7 +12,9 @@ library(chromote)
 # Get last updated date
 
 b <- ChromoteSession$new()
-b$Page$navigate("https://publichealth.jhu.edu/ivac/resources/us-measles-tracker")
+b$Page$navigate(
+  "https://publichealth.jhu.edu/ivac/resources/us-measles-tracker"
+)
 Sys.sleep(5) # Wait for JavaScript to load content
 
 date_text <- b$Runtime$evaluate(
@@ -79,7 +81,7 @@ montana_filtered <- mmr_coverage |>
   filter(
     school_year %in% montana_years,
     geography == "Montana"
-  ) 
+  )
 
 # Add West Virginia for 2019-20
 wv_filtered <- mmr_coverage |>
@@ -94,7 +96,7 @@ mmr_filtered_sorted <-
   arrange(geography, school_year)
 
 # For New Hampshire only
-  mmr_filtered_sorted <- mmr_filtered_sorted |>
+mmr_filtered_sorted <- mmr_filtered_sorted |>
   mutate(estimate_percent = parse_number(as.character(estimate_percent))) |>
   mutate(
     estimate_percent = case_when(
@@ -136,7 +138,6 @@ ny_filtered <-
   filter(
     school_year %in% c("2017-18", "2018-19"),
     geography == "New York"
-    
   )
 
 # Montana: 2019-20 and 2020-21
@@ -185,7 +186,7 @@ non_medical_exemptions <-
   )
 
 nm <- non_medical_exemptions
-targets <- c("New York","Maine","Connecticut","California")
+targets <- c("New York", "Maine", "Connecticut", "California")
 nm$estimate_percent[nm$geography %in% targets] <- NA_real_
 non_medical_exemptions <- nm
 
