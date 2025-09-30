@@ -22,27 +22,28 @@ library(tidyverse)
 library(glue)
 library(sf)
 library(janitor)
+library(here)
 
-source("R/charts.R")
+source(here("R/charts.R"))
 
 state <- params$state
 state_title <- gsub(" Of ", " of ", str_to_title(state))
 
-total_measles_cases <- read_csv("data-clean/total_measles_cases.csv")
+total_measles_cases <- read_csv(here("data-clean/total_measles_cases.csv"))
 
-mmr_coverage_final <- read_csv("data-clean/mmr_coverage_final.csv")
+mmr_coverage_final <- read_csv(here("data-clean/mmr_coverage_final.csv"))
 
-state_policies <- read_csv("data-clean/state_policies_final.csv") |>
+state_policies <- read_csv(here("data-clean/state_policies_final.csv")) |>
   filter(state == state_title) |>
   filter(!(is.na(bill_number)))
 
-dtap_coverage_final <- read_csv("data-clean/dtap_coverage_final.csv")
+dtap_coverage_final <- read_csv(here("data-clean/dtap_coverage_final.csv"))
 
-exemption_policies <- read_csv(
+exemption_policies <- read_csv(here(
   "data-clean/non_medical_exemption_policies_final.csv"
-)
+))
 
-exemption <- read_csv("data-clean/non_medical_exemption.csv")
+exemption <- read_csv(here("data-clean/non_medical_exemption.csv"))
 
 if (state_title == "Maine") {
   year_filter <- "2023-24"
@@ -103,12 +104,14 @@ fourth_box_label <- paste0(fourth_box, "%")
 third_box_before <- exemption_state_year_before |>
   pull("estimate_percent")
 
-is_universal_purchaser <- read_csv("data-clean/universal_purchase_final.csv") |>
+is_universal_purchaser <- read_csv(here(
+  "data-clean/universal_purchase_final.csv"
+)) |>
   filter(State == state_title) |>
   pull("Universal Purchase") |>
   toupper()
 
-health_spending <- read_csv("data-clean/health_spending_final.csv")
+health_spending <- read_csv(here("data-clean/health_spending_final.csv"))
 
 health_spending_state <- health_spending |>
   filter(State == state_title)
@@ -135,10 +138,10 @@ spending_state_label <- paste0("$", spending_state)
 spending_us_label <- paste0("$", spending_us)
 
 us_states <-
-  read_rds("data-clean/us_states.rds")
+  read_rds(here("data-clean/us_states.rds"))
 
 population_by_state <-
-  read_rds("data-clean/population_by_state.rds")
+  read_rds(here("data-clean/population_by_state.rds"))
 
 df <- left_join(us_states, total_measles_cases, by = c("name" = "state"))
 
@@ -215,7 +218,7 @@ dtap_line_df <- dtap_coverage_final |>
   select(geography, year, estimate_percent)
 
 measles_cases_updated_date <-
-  read_rds("data-clean/measles_cases_updated_date.rds")
+  read_rds(here("data-clean/measles_cases_updated_date.rds"))
 ```
 
 ```{r}

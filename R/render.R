@@ -89,28 +89,6 @@ change_parameters_yaml <- function(state) {
 
 walk(states, change_parameters_yaml)
 
-# Edit Path Source ---------------------------------------------------------
-change_path_source <- function(state) {
-  gsub_file(
-    file = str_glue("documents/{state}.qmd"),
-    "R/charts.R",
-    "../R/charts.R" # Quarto uses relative paths
-  )
-}
-walk(states, change_path_source)
-
-# Edit Path Data -----------------------------------------------------------
-
-change_path_data <- function(state) {
-  gsub_file(
-    file = str_glue("documents/{state}.qmd"),
-    pattern = "data-clean/",
-    replacement = "../data-clean/"
-  )
-}
-
-walk(states, change_path_data)
-
 # Render Reports -----------------------------------------------------------
 walk(str_glue("documents/{states}.qmd"), quarto_render)
 
