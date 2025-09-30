@@ -158,7 +158,7 @@ df_mmr_coverage_final <- mmr_coverage_final |>
   select(geography, school_year, estimate_percent) |>
   filter(school_year %in% priority_years) |>
   mutate(
-    estimate_percent = readr::parse_number(as.character(estimate_percent))
+    estimate_percent = parse_number(as.character(estimate_percent))
   ) |>
   group_by(geography, school_year) |>
   summarise(
