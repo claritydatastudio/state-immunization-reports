@@ -220,7 +220,6 @@ measles_cases_updated_date <-
 
 ```{r}
 #| output: asis
-round0 <- function(x) floor(as.numeric(x) + 0.5)
 
 vals <- df_mmr |>
   filter(geography %in% c(state_title, "United States")) |>
@@ -237,9 +236,9 @@ vals_national <- vals |>
   pull(estimate_percent)
 
 # 1) State vs national — if rounded values match, say "similar to"
-st_r <- round0(vals_state)
+st_r <- round_half_up(vals_state)
 
-us_r <- round0(vals_national)
+us_r <- round_half_up(vals_national)
 
 label_national_comparison <-
   if (is.na(st_r) || is.na(us_r)) {
