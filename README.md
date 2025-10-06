@@ -1,4 +1,6 @@
-# State Immunization Reports
+![](assets/colorado-report.png)
+
+# State-Level Childhood Immunization Reports
 
 This repo contains code and data to generate state-level immunization monitoring
 briefs. Developed in conjunction with the Johns Hopkins International Vaccine
