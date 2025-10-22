@@ -14,7 +14,7 @@ execute:
   echo: false
   message: false
   warning: false
-  cache: true
+  cache: false
   fig-align: center
 ---
 
@@ -351,10 +351,12 @@ print(glue(
 ::: {layout="[[1,1]]"}
 
 ```{r}
+#| fig-alt: "DtaP vaccination over time"
 dtap_line_df |> dtap_vaccination_over_time_chart_bar(state_title)
 ```
 
 ```{r}
+#| fig-alt: "DtaP comparison"
 df_dtap |> dtap_vaccination_comparison_chart(df, state_title)
 ```
 
@@ -448,11 +450,13 @@ if (state_title != "New Hampshire") {
 
 ```{r}
 #| fig-align: center
+#| fig-alt: "MMR vaccination over time"
 mmr_line_df |> mmr_vaccination_over_time_chart_bar(state_title)
 ```
 
 
 ```{r}
+#| fig-alt: "MMR vaccination comparison"
 df_mmr |> mmr_vaccination_comparison_chart(df, state_title)
 ```
 
@@ -804,14 +808,13 @@ text_content <- glue(
 ::: {layout="[[1,1]]"}
 
 ```{=typst} 
-#box(inset: 10pt)[
-    #align(horizon)[#text("`r text_content`")]
-]
+#box(inset: 10pt)[#align(horizon)[#text("`r text_content`")]]
 ```
 
 ```{r}
 #| fig-height: 4
 #| fig-width: 6
+#| fig-alt: "Map of measles cases"
 df |> measles_map(state_title)
 ```
 

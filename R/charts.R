@@ -287,7 +287,12 @@ measles_map <- function(df, state) {
         override.aes = list(alpha = 1, colour = NA)
       )
     ) +
-    labs(title = title_text)
+    labs(
+      title = title_text,
+      alt = glue::glue(
+        "Map of measles cases in the state of {state} and neighboring states"
+      )
+    )
 
   p
 }
@@ -355,7 +360,12 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       breaks = seq(0, 100, 20),
       labels = scales::label_number(accuracy = 1, suffix = "%")
     ) +
-    labs(title = "Vaccination comparison (2024)", x = NULL, y = NULL) +
+    labs(
+      title = "Vaccination comparison (2024)",
+      x = NULL,
+      y = NULL,
+      alt = glue::glue("MMR vaccination comparison in the state of {state}")
+    ) +
     theme_minimal() +
     theme(
       panel.grid = element_blank(),
@@ -432,7 +442,10 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
       limits = c(0, 100),
       expand = expansion(mult = c(0, 0.12))
     ) +
-    labs(title = glue::glue("Vaccination in {state_name} over time")) +
+    labs(
+      title = glue::glue("Vaccination in {state_name} over time"),
+      alt = glue::glue("MMR vaccination over time in the state of {state}")
+    ) +
     theme_minimal() +
     theme(
       panel.grid = element_blank(),
@@ -551,7 +564,8 @@ dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name) {
     labs(
       title = "Vaccination comparison (2023)",
       x = NULL,
-      y = NULL
+      y = NULL,
+      alt = glue::glue("DtaP vaccination comparison in the state of {state}")
     ) +
     theme_minimal() +
     theme(
@@ -588,9 +602,7 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
       color = "gray30",
       alpha = 0.8
     ) +
-
     geom_col(fill = "#002D72", width = 0.5) +
-
     geom_text(
       aes(
         y = pmin(estimate_percent + 3, 100),
@@ -602,7 +614,6 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
       family = "Gentona",
       size = 3
     ) +
-
     annotate(
       "text",
       x = n_x + 0.2,
@@ -622,7 +633,10 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
       expand = expansion(mult = c(0, 0.12))
     ) +
     coord_cartesian(clip = "off") +
-    labs(title = glue::glue("Vaccination in {state_name} over time")) +
+    labs(
+      title = glue::glue("Vaccination in {state_name} over time"),
+      alt = glue::glue("DtaP vaccination over time in the state of {state}")
+    ) +
     theme_minimal() +
     theme(
       panel.grid = element_blank(),
