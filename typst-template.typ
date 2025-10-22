@@ -98,10 +98,23 @@
 ) = {
   let state = if state == none { "texas" } else { to-string(state) }
   let state_flag = "assets/flags/" + str.replace(lower(state), " ", "_") + ".svg"
+  let alt_text_flag = "Flag of the " + state + "state"
   let formatted_title = title + " in " + state
   let formatted_title = upper(formatted_title)
 
   set text(lang: "en", region: "US", font: ("Gentona", "Roboto", "Arial"), size: 11pt, weight: "light")
+
+  show heading.where(level: 1): set text(fill: rgb("#002D72"), weight: "bold", font: "Bitter")
+
+  // metadata
+  set document(
+    title: "Childhood immunization report in " + state + " by John Hopkins and the IVAC",
+    author: "John Hopkins University, International Vaccine Access Center",
+    description: "Report of the state of childhood immunization in  "
+      + state
+      + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
+    keywords: ("vaccine", "measles", "childhood", state),
+  )
 
   set page(
     paper: "us-letter",
@@ -126,7 +139,7 @@
 
   show heading: it => {
     let sizes = (
-      "1": 14pt, // Heading level 1
+      "1": 20pt, // Heading level 1
       "2": 14pt, // Heading level 2
       "3": 13pt, // Heading level 3
       "4": 11pt, // Heading level 4
@@ -143,7 +156,7 @@
   // header cover page (title, logo, flag, etc)
   stack(
     place(dx: 0in, dy: 1.45in, align(block(width: 5.5in, [
-      #text(fill: rgb("#002D72"), weight: "bold", size: 20pt, font: "Bitter", formatted_title)]))),
+      #heading(level: 1, formatted_title)]))),
     place(
       dx: 5.5in,
       dy: 1.35in,
@@ -152,13 +165,17 @@
         box(
           height: 0.8in, // reserve fixed height
           align(center)[
-            #image(state_flag, height: 0.7in) // scaled by height, always centered
+            #image(state_flag, height: 0.7in, alt: alt_text_flag) // scaled by height, always centered
           ],
         ),
       ),
     ),
     place(dx: 0.2in, dy: 0.25in, align(horizon, block(width: 5in, [
-      #image("assets/logo.png", width: 70%)
+      #image(
+        "assets/logo.png",
+        width: 70%,
+        alt: "John Hopkins University (Bloomberg School of Public Health) and International Vaccine Access Center (IVAC) logo",
+      )
     ]))),
     place(dx: 0in, dy: 1.2in, align(block([
       #blueline()

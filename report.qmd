@@ -4,6 +4,7 @@ date: "September 2025"
 date-format: "MMMM YYYY"
 format:
    typst:
+      keep-typ: true
       template-partials:
          - typst-template.typ
          - typst-show.typ
@@ -13,6 +14,7 @@ execute:
   echo: false
   message: false
   warning: false
+  cache: true
   fig-align: center
 ---
 
@@ -751,8 +753,13 @@ typst_list <- state_policies |>
       "up-arrow.png",
       "down-arrow.png"
     ),
+    arrow_alt = ifelse(
+      bill_valency == "Good",
+      "Green arrow pointing upward",
+      "Red arrow pointing downward"
+    ),
     list_item = glue(
-      '#list(marker: image("assets/{arrow}", width: 23pt))[',
+      '#list(marker: image("assets/{arrow}", width: 23pt, alt: "{arrow_alt}"))[',
       "{bill_number} ({bill_status}) – {text_description}]"
     )
   ) |>
@@ -825,7 +832,7 @@ df |> measles_map(state_title)
       columns: (1fr, 10fr),
       gutter: 0.1em,
       align: horizon,
-      [#image("assets/coins.svg")],
+      [#image("assets/coins.svg", alt: "Several coins stacked on top of each other")],
       [#text(
         font: "Gentona",
         size: 11pt,

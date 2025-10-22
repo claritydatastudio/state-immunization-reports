@@ -90,6 +90,10 @@ change_parameters_yaml <- function(state) {
 walk(states, change_parameters_yaml)
 
 # Render Reports -----------------------------------------------------------
+Sys.setenv(QUARTO_TYPST = "/Users/josephbarbier/l/typst/target/release/typst")
+system("quarto typst --version")
+quarto_render("report.qmd")
+
 walk(str_glue("documents/{states}.qmd"), quarto_render)
 
 # Move Reports -------------------------------------------------------------
