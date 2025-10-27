@@ -799,8 +799,8 @@ typst_list <- state_policies |>
     ),
     arrow_alt = ifelse(
       bill_valency == "Good",
-      "Green arrow pointing upward",
-      "Red arrow pointing downward"
+      "Policy enacted",
+      "Policy not enacted"
     ),
     list_item = glue(
       '#list(marker: image("assets/{arrow}", width: 18pt, alt: "{arrow_alt}"))[',
@@ -888,7 +888,7 @@ ggsave(filename, plot = p)
       columns: (1fr, 10fr),
       gutter: 0.1em,
       align: horizon,
-      [#image("assets/coins.svg", alt: "Several coins stacked on top of each other")],
+      [#image("assets/coins.svg", alt: "Image of three coins stacked on top of each other.")],
       [#text(
         font: "Gentona",
         size: 11pt,

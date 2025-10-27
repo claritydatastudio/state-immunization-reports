@@ -182,9 +182,7 @@
         ),
       ),
     ),
-    place(dx: 0in, dy: 1.2in, align(block([
-      #blueline()
-    ]))),
+    place(dx: 0in, dy: 1.2in, align(block([#blueline()]))),
   )
 
   v(2.1in) // hardcoded margin before main content of the doc

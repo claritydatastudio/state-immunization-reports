@@ -214,6 +214,10 @@ measles_map <- function(df, state) {
     sel_val <- 0
   }
 
+  alt_text <- glue::glue(
+    "Map showing measles cases in {state} ({sel_val}) and surrounding states between January 1, 2025 and {format(Sys.Date(), '%B %d, %Y')}."
+  )
+
   # Create the title text
   if (sel_val == 1) {
     title_text <- paste0(sel_val, " measles case in ", state)
@@ -289,12 +293,10 @@ measles_map <- function(df, state) {
     ) +
     labs(
       title = title_text,
-      alt = glue::glue(
-        "Map of measles cases in the state of {state} and neighboring states"
-      )
+      alt = alt_text
     )
 
-  p
+  return(p)
 }
 
 
@@ -332,6 +334,20 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       )
   }
 
+  alt_text <- glue::glue(
+    "Bar chart showing how {state_name} compares to neighboring states and the United States as a whole in terms of proportion of kindergarteners fully protected with MMR vaccines. ",
+    paste0(
+      paste0(
+        chart_data$geography,
+        ": ",
+        round(chart_data$estimate_percent),
+        "%",
+        collapse = ", "
+      ),
+      ". The HP2030 target is 95%."
+    )
+  )
+
   # Create base plot
   p <- ggplot(chart_data, aes(x = estimate_percent, y = geography)) +
     geom_col(
@@ -364,7 +380,7 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       title = "Vaccination comparison (2024)",
       x = NULL,
       y = NULL,
-      alt = glue::glue("MMR vaccination comparison in the state of {state}")
+      alt = alt_text
     ) +
     theme_minimal() +
     theme(
@@ -422,6 +438,20 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
     stop(paste("No data with present values for state:", state_name))
   }
 
+  alt_text <- glue::glue(
+    "Bar chart showing proportion of kindergarteners fully protected with MMR vaccines in {state_name} over time. ",
+    paste0(
+      paste0(
+        state_data$school_year,
+        ": ",
+        round(state_data$estimate_percent),
+        "%",
+        collapse = ", "
+      ),
+      ". The HP2030 target is 95%."
+    )
+  )
+
   # Create base plot
   p <- ggplot(state_data, aes(x = school_year, y = estimate_percent)) +
     geom_col(fill = "#68ACE5", width = 0.5) +
@@ -444,7 +474,7 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
     ) +
     labs(
       title = glue::glue("Vaccination in {state_name} over time"),
-      alt = glue::glue("MMR vaccination over time in the state of {state}")
+      alt = alt_text
     ) +
     theme_minimal() +
     theme(
@@ -514,6 +544,20 @@ dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name) {
       txt_col = ifelse(geography == state_name, "white", "black")
     )
 
+  alt_text <- glue::glue(
+    "Bar chart showing how {state_name} compares to neighboring states and the United States as a whole in terms of proportion of 2-year-olds fully protected with DTaP vaccines. ",
+    paste0(
+      paste0(
+        chart_data$geography,
+        ": ",
+        round(chart_data$estimate_percent),
+        "%",
+        collapse = ", "
+      ),
+      ". The HP2030 target is 90%."
+    )
+  )
+
   ggplot(chart_data, aes(x = estimate_percent, y = geography)) +
     geom_vline(
       xintercept = 90,
@@ -565,7 +609,7 @@ dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name) {
       title = "Vaccination comparison (2023)",
       x = NULL,
       y = NULL,
-      alt = glue::glue("DtaP vaccination comparison in the state of {state}")
+      alt = alt_text
     ) +
     theme_minimal() +
     theme(
@@ -593,6 +637,20 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
     )
 
   n_x <- nlevels(state_data$year)
+
+  alt_text <- glue::glue(
+    "Bar chart showing proportion of 2-year-olds fully protected with DTaP vaccines in {state_name} over time. ",
+    paste0(
+      paste0(
+        state_data$year,
+        ": ",
+        round(state_data$estimate_percent),
+        "%",
+        collapse = ", "
+      ),
+      ". The HP2030 target is 90%."
+    )
+  )
 
   ggplot(state_data, aes(x = year, y = estimate_percent)) +
 
@@ -635,7 +693,7 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
     coord_cartesian(clip = "off") +
     labs(
       title = glue::glue("Vaccination in {state_name} over time"),
-      alt = glue::glue("DtaP vaccination over time in the state of {state}")
+      alt = alt_text
     ) +
     theme_minimal() +
     theme(
