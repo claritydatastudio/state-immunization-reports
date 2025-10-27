@@ -1,6 +1,6 @@
 ---
 title: "Status of childhood immunization"
-date: "September 2025"
+date: today
 date-format: "MMMM YYYY"
 format:
    typst:
@@ -9,7 +9,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-  state: texas
+  state: tennessee
 execute:
   echo: false
   message: false
@@ -803,7 +803,7 @@ typst_list <- state_policies |>
       "Red arrow pointing downward"
     ),
     list_item = glue(
-      '#list(marker: image("assets/{arrow}", width: 23pt, alt: "{arrow_alt}"))[',
+      '#list(marker: image("assets/{arrow}", width: 18pt, alt: "{arrow_alt}"))[',
       "{bill_number} ({bill_status}) – {text_description}]"
     )
   ) |>
@@ -811,7 +811,7 @@ typst_list <- state_policies |>
 typst_list <- gsub("\\$", "\\\\\\$", typst_list)
 
 typst_code <- glue(
-  "box(inset: 10pt)[\n",
+  "box(inset: 5pt)[\n",
   '{paste(typst_list, collapse = "\n")}\n]',
   .trim = FALSE
 )
@@ -823,9 +823,11 @@ writeLines(typst_code, "state_policies.typ")
 <div style="background-color: #F8F8F8;">
 
 ```{=typst}
+#set text(size: 8pt)
 #let policies = read("state_policies.typ")
 #eval(policies) // convert a string into actual typst code
-#box(inset: 10pt)[#source("Source: AIM, LegiScan, NCSL")]
+#box(inset: (left: 6pt, bottom: 6pt, top: 0pt))[#source("Source: AIM, LegiScan, NCSL")]
+#set text(size: 11pt)
 ```
 
 </div>

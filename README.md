@@ -83,5 +83,3 @@ Other functions used (such as `#v()`) are built-in with Typst.
 A very small amount of HTML is used for grey background sections. Note that the vast majority of html/css is **not** supported here. Background colors are [one of the few things](https://quarto.org/docs/advanced/typst/typst-css.html#supported-elements-and-properties) Quarto natively translate to typst.
 
 `R/render.R` generates all PDF (one per state) and store them in `reports/`, as well as create a zip with all the PDFs at the root of the directory.
-
-## About accessibility
