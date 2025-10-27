@@ -78,8 +78,9 @@
 
 #let article(title: none, date: none, state: none, doc) = {
   let state = if state == none { "texas" } else { to-string(state) }
+  let state_title_case = titlecase(state)
   let state_flag = "assets/flags/" + str.replace(lower(state), " ", "_") + ".svg"
-  let alt_text_flag = "Flag of the " + state + "state"
+  let alt_text_flag = "Flag of " + state_title_case
   let formatted_title = title + " in " + state
   let formatted_title = upper(formatted_title)
 
@@ -95,9 +96,11 @@
 
   // metadata
   set document(
-    title: "Childhood immunization report in " + state + " by John Hopkins and the IVAC",
-    author: "John Hopkins University, International Vaccine Access Center",
-    description: "Report of the state of childhood immunization in  " + state + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
+    title: "Childhood immunization report in " + state_title_case + " by Johns Hopkins and the IVAC",
+    author: "Johns Hopkins University, International Vaccine Access Center",
+    description: "Report on the state of childhood immunization in  "
+      + state_title_case
+      + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
     keywords: ("vaccine", "measles", "childhood", state),
   )
 
@@ -160,7 +163,7 @@
           align(
             center,
           )[
-            #image(state_flag, height: 0.7in, alt: alt_text_flag) // scaled by height, always centered
+            #image(state_flag, height: 0.7in, alt: alt_text_flag.text) // scaled by height, always centered
           ],
         ),
       ),
