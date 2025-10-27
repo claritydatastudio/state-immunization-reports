@@ -9,7 +9,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-  state: new hampshire
+  state: texas
 execute:
   echo: false
   message: false
@@ -348,19 +348,35 @@ print(glue(
 #chart-title("Proportion of 2-year-olds fully protected with DTaP vaccines")
 ```
 
-::: {layout="[[1,1]]"}
+:::: {layout="[1,1]"}
 
+::: {#first-column}
 ```{r}
-#| fig-alt: "DtaP vaccination over time"
-dtap_line_df |> dtap_vaccination_over_time_chart_bar(state_title)
+p <- dtap_line_df |> dtap_vaccination_over_time_chart_bar(state_title)
+last_alt <- get_alt_text(p)
+filename <- "report_files/dtap_vaccination_over_time.svg"
+ggsave(filename, plot = p)
 ```
 
-```{r}
-#| fig-alt: "DtaP comparison"
-df_dtap |> dtap_vaccination_comparison_chart(df, state_title)
+```{=typst}
+#image("`r filename`", width: 100.0%, alt: "`r last_alt`")
 ```
-
 :::
+
+::: {#second-column}
+```{r}
+p <- df_dtap |> dtap_vaccination_comparison_chart(df, state_title)
+last_alt <- get_alt_text(p)
+filename <- "report_files/dtap_vaccination_comparison.svg"
+ggsave(filename, plot = p)
+```
+
+```{=typst}
+#image("`r filename`", width: 100.0%, alt: "`r last_alt`")
+```
+:::
+
+::::
 
 ```{r}
 vals <- dtap_line_df |>
@@ -444,28 +460,52 @@ if (state_title == "New Hampshire") {
 ```{r}
 #| output: asis
 if (state_title != "New Hampshire") {
-  cat('::: {layout="[[1,1]]"}\n')
+  cat(':::: {layout="[1,1]"}\n')
+  cat("::: {#first-column}\n")
 }
 ```
 
 ```{r}
 #| fig-align: center
-#| fig-alt: "MMR vaccination over time"
-mmr_line_df |> mmr_vaccination_over_time_chart_bar(state_title)
+p <- mmr_line_df |> mmr_vaccination_over_time_chart_bar(state_title)
+last_alt <- get_alt_text(p)
+filename <- "report_files/mmr_vaccination_over_time.svg"
+ggsave(filename, plot = p)
+width <- if (state_title == "New Hampshire") "65%" else "100%"
 ```
 
-
-```{r}
-#| fig-alt: "MMR vaccination comparison"
-df_mmr |> mmr_vaccination_comparison_chart(df, state_title)
+```{=typst}
+#align(center)[#image("`r filename`", width: `r width`, alt: "`r last_alt`")]
 ```
 
 ```{r}
 #| output: asis
 if (state_title != "New Hampshire") {
   cat(":::\n")
+  cat("::: {#second-column}\n")
+
+  p <- df_mmr |> mmr_vaccination_comparison_chart(df, state_title)
+  last_alt <- get_alt_text(p)
+  filename <- "report_files/mmr_vaccination_comparison.svg"
+  ggsave(filename, plot = p)
 }
 ```
+
+```{=typst}
+#if "`r state_title`" != "New Hampshire" [
+  #block[]
+  #image("`r filename`", width: 100.0%, alt: "`r last_alt`")
+]
+```
+
+```{r}
+#| output: asis
+if (state_title != "New Hampshire") {
+  cat(":::\n")
+  cat("::::\n")
+}
+```
+
 
 ```{r}
 is_decreasing_yoy <- mmr_coverage_final |>
@@ -805,24 +845,35 @@ text_content <- glue(
 
 <div style="background-color: #F8F8F8;">
 
-::: {layout="[[1,1]]"}
+:::: {layout="[1,1]"}
 
+::: {#first-column}
 ```{=typst} 
 #box(inset: 10pt)[#align(horizon)[#text("`r text_content`")]]
 ```
+:::
 
+::: {#second-column}
 ```{r}
 #| fig-height: 4
 #| fig-width: 6
-#| fig-alt: "Map of measles cases"
-df |> measles_map(state_title)
+#| fig-alt: !expr last_alt
+p <- df |> measles_map(state_title)
+last_alt <- get_alt_text(p)
+filename <- "report_files/measles_map.svg"
+ggsave(filename, plot = p)
+```
+
+```{=typst}
+#image("`r filename`", width: 100.0%, alt: "`r last_alt`")
 ```
 
 ```{=typst} 
 #source("Source: U.S. Measles Tracker, IVAC.")
 ```
-
 :::
+
+::::
 
 </div>
 
@@ -867,7 +918,7 @@ if (state_title == "New Hampshire") {
 
 ```{=typst}
 #show list: set block(spacing: 0.5em) // reduce line height
-#set text(size: 9pt) // reduce all text font size
+#set text(size: 8.5pt) // reduce all text font size
 ```
 
 Vaccination coverage:
