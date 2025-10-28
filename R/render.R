@@ -7,9 +7,9 @@ library(fs)
 library(xfun)
 library(googledrive)
 
-# Run Typst 0.14 (pre-release)
-#Sys.setenv(QUARTO_TYPST = "/Users/josephbarbier/l/typst/target/release/typst")
-#system("quarto typst --version")
+# Run Typst 0.14
+Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
+system("quarto typst --version") # should be typst 0.14.x
 
 # Import Data ------------------------------------------------------------
 source("R/import-data.R")
@@ -30,6 +30,7 @@ if (dir_exists("documents")) {
   dir_delete("reports")
 }
 dir_create("documents/assets/flags")
+dir_create("documents/report_files")
 dir_create("reports")
 
 create_state_qmd <- function(state) {
