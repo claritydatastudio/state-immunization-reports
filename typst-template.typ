@@ -98,9 +98,7 @@
   set document(
     title: "Childhood immunization report in " + state_title_case + " by Johns Hopkins and the IVAC",
     author: "Johns Hopkins University, International Vaccine Access Center",
-    description: "Report on the state of childhood immunization in  "
-      + state_title_case
-      + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
+    description: "Report on the state of childhood immunization in  " + state_title_case + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
     keywords: ("vaccine", "measles", "childhood", state),
   )
 
@@ -163,7 +161,7 @@
           align(
             center,
           )[
-            #image(state_flag, height: 0.7in, alt: alt_text_flag.text) // scaled by height, always centered
+            #image(state_flag, height: 0.7in, alt: to-string(alt_text_flag)) // scaled by height, always centered
           ],
         ),
       ),
