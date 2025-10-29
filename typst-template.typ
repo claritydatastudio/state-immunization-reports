@@ -96,13 +96,9 @@
 
   // metadata
   set document(
-    title: "Report on the status of childhood immunization in "
-      + state_title_case
-      + " by the International Vaccine Access Center at Johns Hopkins University",
+    title: "Report on the status of childhood immunization in " + state_title_case,
     author: "Johns Hopkins University, International Vaccine Access Center",
-    description: "Report on the status of childhood immunization in  "
-      + state_title_case
-      + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
+    description: "Report on the status of childhood immunization in  " + state_title_case + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
     keywords: ("vaccine", "measles", "childhood", state),
   )
 

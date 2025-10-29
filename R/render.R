@@ -109,9 +109,7 @@ rename_file <- function(state) {
   state_title <- stringr::str_to_title(gsub("_", " ", state))
   file.rename(
     glue("reports/{state}.pdf"),
-    glue(
-      "reports/Report on the status of childhood immunization in {state_title} by the International Vaccine Access Center at Johns Hopkins University.pdf"
-    )
+    glue("reports/Status of Childhood Immunization in {state_title}.pdf")
   )
 }
 walk(states, rename_file)
