@@ -5,7 +5,9 @@
 }
 
 #let source(color: black, body) = {
-  align(right)[#text(body, style: "italic", font: "Bitter", size: 9pt, fill: color)]
+  align(
+    right,
+  )[#text(body, style: "italic", font: "Bitter", size: 9pt, fill: color)]
 }
 
 #let status-boxes(top-text: "", bottom-text: "") = {
@@ -33,31 +35,18 @@
 }
 
 #let connected-boxes(text1: "", text2: "") = {
-  let box-style = (
-    width: auto,
-    fill: rgb("#002D72"),
-    inset: (y: 10pt, x: 20pt),
-  )
+  let box-style = (width: auto, fill: rgb("#002D72"), inset: (y: 10pt, x: 20pt))
 
-  let left = box(
-    ..box-style,
-    align(center + horizon)[
-      #text(fill: white, weight: "bold", font: "Bitter", text1)
-    ],
-  )
+  let left = box(..box-style, align(center + horizon)[
+    #text(fill: white, weight: "bold", font: "Bitter", text1)
+  ])
 
-  let right = box(
-    ..box-style,
-    align(center + horizon)[
-      #text(fill: white, weight: "bold", font: "Bitter", text2)
-    ],
-  )
+  let right = box(..box-style, align(center + horizon)[
+    #text(fill: white, weight: "bold", font: "Bitter", text2)
+  ])
 
   let connector = align(center + horizon)[
-    #line(
-      length: 61pt,
-      stroke: (paint: rgb("#68ACE5"), thickness: 3pt),
-    )
+    #line(length: 61pt, stroke: (paint: rgb("#68ACE5"), thickness: 3pt))
   ]
 
   // Now we return three elements: left box, connector, right box
@@ -66,12 +55,9 @@
 
 #let chart-title(body) = {
   v(7pt)
-  align(center)[#text(
-    body,
-    fill: rgb("#002D72"),
-    font: "Gentona",
-    weight: "medium",
-  )]
+  align(
+    center,
+  )[#text(body, fill: rgb("#002D72"), font: "Gentona", weight: "medium")]
 }
 
 #let to-string(it) = {
@@ -90,18 +76,31 @@
   }
 }
 
-#let article(
-  title: none,
-  date: none,
-  state: none,
-  doc,
-) = {
+#let article(title: none, date: none, state: none, doc) = {
   let state = if state == none { "texas" } else { to-string(state) }
+  let state_title_case = titlecase(state)
   let state_flag = "assets/flags/" + str.replace(lower(state), " ", "_") + ".svg"
+  let alt_text_flag = "Flag of " + state_title_case
   let formatted_title = title + " in " + state
   let formatted_title = upper(formatted_title)
 
-  set text(lang: "en", region: "US", font: ("Gentona", "Roboto", "Arial"), size: 11pt, weight: "light")
+  set text(
+    lang: "en",
+    region: "US",
+    font: ("Gentona", "Roboto", "Arial"),
+    size: 11pt,
+    weight: "light",
+  )
+
+  show heading.where(level: 1): set text(fill: rgb("#002D72"), weight: "bold", font: "Bitter")
+
+  // metadata
+  set document(
+    title: "Report on the status of childhood immunization in " + state_title_case,
+    author: "Johns Hopkins University, International Vaccine Access Center",
+    description: "Report on the status of childhood immunization in  " + state_title_case + ". Report compares vaccinations of MMR and DTaP vaccines, cost and comparison with the United States.",
+    keywords: ("vaccine", "measles", "childhood", state),
+  )
 
   set page(
     paper: "us-letter",
@@ -112,21 +111,28 @@
         height: 0.75in,
         outset: (x: 15%),
         fill: rgb("#68ACE5"),
-        pad(top: 16pt, block(width: 100%, fill: rgb("#68ACE5"), [
-          #grid(
-            columns: (3fr, auto, 1fr),
-            align(left)[#text(formatted_title, fill: white, weight: 600, font: "Bitter")],
-            align(center)[],
-            align(right)[#text(upper(date), fill: white, weight: 600, font: "Bitter")],
-          )
-        ])),
+        pad(
+          top: 16pt,
+          block(
+            width: 100%,
+            fill: rgb("#68ACE5"),
+            [
+              #grid(
+                columns: (3fr, auto, 1fr),
+                align(left)[#text(formatted_title, fill: white, weight: 600, font: "Bitter")],
+                align(center)[],
+                align(right)[#text(upper(date), fill: white, weight: 600, font: "Bitter")],
+              )
+            ],
+          ),
+        ),
       )
     },
   )
 
   show heading: it => {
     let sizes = (
-      "1": 14pt, // Heading level 1
+      "1": 20pt, // Heading level 1
       "2": 14pt, // Heading level 2
       "3": 13pt, // Heading level 3
       "4": 11pt, // Heading level 4
@@ -143,7 +149,8 @@
   // header cover page (title, logo, flag, etc)
   stack(
     place(dx: 0in, dy: 1.45in, align(block(width: 5.5in, [
-      #text(fill: rgb("#002D72"), weight: "bold", size: 20pt, font: "Bitter", formatted_title)]))),
+      #heading(level: 1, formatted_title)
+    ]))),
     place(
       dx: 5.5in,
       dy: 1.35in,
@@ -151,18 +158,32 @@
         horizon,
         box(
           height: 0.8in, // reserve fixed height
-          align(center)[
-            #image(state_flag, height: 0.7in) // scaled by height, always centered
+          align(
+            center,
+          )[
+            #image(state_flag, height: 0.7in, alt: to-string(alt_text_flag)) // scaled by height, always centered
           ],
         ),
       ),
     ),
-    place(dx: 0.2in, dy: 0.25in, align(horizon, block(width: 5in, [
-      #image("assets/logo.png", width: 70%)
-    ]))),
-    place(dx: 0in, dy: 1.2in, align(block([
-      #blueline()
-    ]))),
+    place(
+      dx: 0.2in,
+      dy: 0.25in,
+      align(
+        horizon,
+        block(
+          width: 5in,
+          [
+            #image(
+              "assets/logo.png",
+              width: 70%,
+              alt: "John Hopkins University (Bloomberg School of Public Health) and International Vaccine Access Center (IVAC) logo",
+            )
+          ],
+        ),
+      ),
+    ),
+    place(dx: 0in, dy: 1.2in, align(block([#blueline()]))),
   )
 
   v(2.1in) // hardcoded margin before main content of the doc

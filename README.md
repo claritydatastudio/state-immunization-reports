@@ -1,8 +1,10 @@
-# State Immunization Reports
+# State-Level Childhood Immunization Reports
 
 This repo contains code and data to generate state-level immunization monitoring
 briefs. Developed in conjunction with the Johns Hopkins International Vaccine
 Access Center (IVAC), you can see the final reports on the [IVAC website](https://publichealth.jhu.edu/ivac/monitoring-childhood-immunization-at-the-state-level).
+
+![](assets/colorado-report.png)
 
 ## Data
 
@@ -50,7 +52,7 @@ install.packages(c("quarto", "glue", "tidyverse", "here", "fs", "xfun", "googled
 
 You also need to have the Gentona (a paid font made available to JHU staff) and
 [Bitter](https://fonts.google.com/specimen/Bitter) fonts installed on your
-computer for everything to work properly. 
+computer for everything to work properly.
 
 If you are on a Mac, you may need to install [XQuartz](https://www.xquartz.org/) so that the plots will
 render correctly.
