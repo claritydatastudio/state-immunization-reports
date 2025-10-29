@@ -105,6 +105,17 @@ file_move(
   new_path = "reports"
 )
 
+rename_file <- function(state) {
+  state_title <- stringr::str_to_title(gsub("_", " ", state))
+  file.rename(
+    glue("reports/{state}.pdf"),
+    glue(
+      "reports/Report on the status of childhood immunization in {state_title} by the International Vaccine Access Center at Johns Hopkins University.pdf"
+    )
+  )
+}
+walk(states, rename_file)
+
 # Upload Reports -----------------------------------------------------------
 if (str_detect(Sys.getenv("GOOGLE_DRIVE_EMAIL"), "rfortherestofus.com")) {
   drive_auth(Sys.getenv("GOOGLE_DRIVE_EMAIL"))
