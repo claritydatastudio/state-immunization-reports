@@ -8,7 +8,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-  state: new hampshire
+  state: montana
 execute:
   echo: false
   message: false
@@ -228,10 +228,13 @@ label_national_comparison <-
   }
 
 # some states have some missing data here
-if (
+if (state_title == "Montana") {
+  sentence_median_comparison <- glue(
+    "- {state_title} does not allow personal exemption.\n\n"
+  )
+} else if (
   !(state_title %in%
     c(
-      "Montana",
       "West Virginia",
       "Maine",
       "California",
