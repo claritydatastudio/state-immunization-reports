@@ -9,7 +9,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-state: montana
+  state: alabama
 execute:
   echo: false
   message: false

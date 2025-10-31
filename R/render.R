@@ -6,10 +6,11 @@ library(here)
 library(fs)
 library(xfun)
 library(googledrive)
+library(xmpdf)
 
 # Run Typst 0.14
-Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
-system("quarto typst --version") # should be typst 0.14.x
+# Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
+# system("quarto typst --version") # should be typst 0.14.x
 
 # Import Data ------------------------------------------------------------
 source("R/import-data.R")
@@ -106,13 +107,35 @@ file_move(
 )
 
 rename_file <- function(state) {
-  state_title <- stringr::str_to_title(gsub("_", " ", state))
-  file.rename(
-    glue("reports/{state}.pdf"),
-    glue("reports/Status of Childhood Immunization in {state_title}.pdf")
+  state_title <- str_to_title(gsub("_", " ", state))
+  old_name <- glue("reports/{state}.pdf")
+  new_name <- glue(
+    "reports/Status of Childhood Immunization in {state_title}.pdf"
   )
+
+  file.rename(old_name, new_name)
 }
 walk(states, rename_file)
+
+
+# Update Titles ----------------------------------------------------------
+
+update_pdf_titles <- function(state) {
+  state_title <- str_to_title(gsub("_", " ", state))
+  pdf_path <- glue(
+    "reports/Status of Childhood Immunization in {state_title}.pdf"
+  )
+
+  set_docinfo(
+    docinfo = docinfo(
+      title = glue("Status of Childhood Immunization in {state_title}")
+    ),
+    input = pdf_path,
+    output = pdf_path
+  )
+}
+
+walk(states, update_pdf_titles)
 
 # Upload Reports -----------------------------------------------------------
 if (str_detect(Sys.getenv("GOOGLE_DRIVE_EMAIL"), "rfortherestofus.com")) {
