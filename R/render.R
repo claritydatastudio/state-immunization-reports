@@ -12,8 +12,8 @@ library(googledrive)
 library(xmpdf)
 
 # Run Typst 0.14
-# Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
-# system("quarto typst --version") # should be typst 0.14.x
+#Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
+#system("quarto typst --version") # should be typst 0.14.x
 
 # Import Data ------------------------------------------------------------
 source("R/import-data.R")
@@ -98,8 +98,27 @@ change_parameters_yaml <- function(state) {
 
 walk(states, change_parameters_yaml)
 
+### Note about rendering:
+# Since we want to pass the --pdf-standard flag to Typst CLI,
+# we only use Quarto to render to .typ, and then we render ourselves
+# to pdf using the typst CLI.
+# This does not have a big impact of performance since Typst compilation
+# is very fast anyway.
+
 # Render Reports -----------------------------------------------------------
 walk(str_glue("documents/{states}.qmd"), quarto_render)
+
+# Custom Typst compilation -------------------------------------------------
+typst_compile <- function(state) {
+  system2(
+    "typst",
+    c("compile", glue("{state}.typ", " --pdf-standard", " ua-1"))
+  )
+
+  is_compliant <- is_pdf_compliant(glue("{state}.pdf"))
+  print(glue("Report of {state} is compliant: {is_compliant}"))
+}
+walk(str_glue("documents/{states}"), typst_compile)
 
 # Move Reports -------------------------------------------------------------
 all_reports <- dir_ls(path = "documents", regexp = ".pdf")
