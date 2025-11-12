@@ -2,7 +2,6 @@
 library(quarto)
 library(xmpdf)
 library(stringr)
-library(checkpdf)
 library(glue)
 library(tidyverse)
 library(here)
@@ -12,8 +11,8 @@ library(googledrive)
 library(xmpdf)
 
 # Run Typst 0.14
-#Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
-#system("quarto typst --version") # should be typst 0.14.x
+Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
+system("quarto typst --version") # should be typst 0.14.x
 
 # Import Data ------------------------------------------------------------
 source("R/import-data.R")
@@ -114,9 +113,6 @@ typst_compile <- function(state) {
     "typst",
     c("compile", glue("{state}.typ", " --pdf-standard", " ua-1"))
   )
-
-  is_compliant <- is_pdf_compliant(glue("{state}.pdf"))
-  print(glue("Report of {state} is compliant: {is_compliant}"))
 }
 walk(str_glue("documents/{states}"), typst_compile)
 
