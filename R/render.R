@@ -1,5 +1,8 @@
 # Load Packages -----------------------------------------------------------
 library(quarto)
+library(xmpdf)
+library(stringr)
+library(checkpdf)
 library(glue)
 library(tidyverse)
 library(here)

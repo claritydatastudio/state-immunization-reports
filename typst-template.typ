@@ -94,6 +94,8 @@
 
   show heading.where(level: 1): set text(fill: rgb("#002D72"), weight: "bold", font: "Bitter")
 
+  state_title_case
+
   // metadata
   set document(
     title: "Status of Childhood Immunization in " + state_title_case,
