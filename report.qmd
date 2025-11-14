@@ -9,7 +9,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
-state: montana
+ state: alabama
 execute:
   echo: false
   message: false
@@ -327,16 +327,14 @@ cat(
 )
 ```
 
-```{=typst} 
+```{=typst}
 #blueline()
 ```
-
 ## Vaccination coverage
 
 ```{=typst}
 #v(3pt)
 ```
-
 ```{r}
 #| output: asis
 print(glue(
@@ -344,19 +342,16 @@ print(glue(
 ))
 ```
 
-
-<div style="background-color: #F8F8F8;">
-
+::: {style="background-color: #F8F8F8;"}
 ```{=typst}
 #chart-title("Proportion of 2-year-olds fully protected with DTaP vaccines")
 ```
-
-:::: {layout="[1,1]"}
-
+::: {layout="[1,1]"}
 ::: {#first-column}
 ```{r}
 p <- dtap_line_df |> dtap_vaccination_over_time_chart_bar(state_title)
 last_alt <- get_alt_text(p)
+dir.create("report_files", showWarnings = FALSE, recursive = TRUE)
 filename <- "report_files/dtap_vaccination_over_time.svg"
 ggsave(filename, plot = p)
 ```
@@ -378,8 +373,7 @@ ggsave(filename, plot = p)
 #image("`r filename`", width: 100.0%, alt: "`r last_alt`")
 ```
 :::
-
-::::
+:::
 
 ```{r}
 vals <- dtap_line_df |>
@@ -439,15 +433,12 @@ text_content <- glue(
   #source("Source: ChildVaxView")
 ]
 ```
+:::
 
-</div>
-
-```{=typst} 
+```{=typst}
 #pagebreak()
 ```
-
-<div style="background-color: #F8F8F8;">
-
+::: {style="background-color: #F8F8F8;"}
 ```{r}
 if (state_title == "New Hampshire") {
   chart_title <- "Proportion of childcare attendees protected with MMR vaccines"
@@ -459,7 +450,6 @@ if (state_title == "New Hampshire") {
 ```{=typst}
 #chart-title("`r chart_title`")
 ```
-
 ```{r}
 #| output: asis
 if (state_title != "New Hampshire") {
@@ -480,7 +470,6 @@ width <- if (state_title == "New Hampshire") "65%" else "100%"
 ```{=typst}
 #align(center)[#image("`r filename`", width: `r width`, alt: "`r last_alt`")]
 ```
-
 ```{r}
 #| output: asis
 if (state_title != "New Hampshire") {
@@ -500,7 +489,6 @@ if (state_title != "New Hampshire") {
   #image("`r filename`", width: 100.0%, alt: "`r last_alt`")
 ]
 ```
-
 ```{r}
 #| output: asis
 if (state_title != "New Hampshire") {
@@ -508,7 +496,6 @@ if (state_title != "New Hampshire") {
   cat("::::\n")
 }
 ```
-
 
 ```{r}
 is_decreasing_yoy <- mmr_coverage_final |>
@@ -601,13 +588,11 @@ if (state_title %in% c("West Virginia", "Montana")) {
   #source("`r source`")
 ]
 ```
+:::
 
-</div>
-
-```{=typst} 
+```{=typst}
 #blueline()
 ```
-
 ## Vaccination exemptions
 
 ```{=typst}
@@ -615,9 +600,7 @@ if (state_title %in% c("West Virginia", "Montana")) {
   Many states allow children attending public school to receive vaccination exemptions for religious reasons or for personal reasons, sometimes referred to as "philosophical exemptions." Higher rates of non-medical exemptions have been linked with increased disease transmission.
 ]
 ```
-
-<div style="background-color: #F8F8F8;">
-
+::: {style="background-color: #F8F8F8;"}
 ```{r}
 if (
   !(state_title %in%
@@ -690,18 +673,15 @@ if (
   #source("Source: NCSL, SchoolVaxView")
 ]
 ```
-
-</div>
+:::
 
 ```{=typst}
 #pagebreak()
 #blueline()
 ```
-
 ## PUBLIC HEALTH SPENDING
 
-<div style="background-color: #F8F8F8;">
-
+::: {style="background-color: #F8F8F8;"}
 ```{r}
 if (state_title == "District of Columbia") {
   text_content <- glue(
@@ -742,17 +722,14 @@ if (state_title == "District of Columbia") {
   #source("Source: America's Health Rankings")
 ]
 ```
+:::
 
-</div>
-
-```{=typst} 
+```{=typst}
 #blueline()
 ```
-
 ## UNIVERSAL VACCINE PURCHASING
 
-<div style="background-color: #F8F8F8;">
-
+::: {style="background-color: #F8F8F8;"}
 ```{=typst}
 #box(inset: 10pt)[
   #grid(
@@ -765,13 +742,11 @@ if (state_title == "District of Columbia") {
   #source("Source: AIM")
 ]
 ```
+:::
 
-</div>
-
-```{=typst} 
+```{=typst}
 #blueline()
 ```
-
 ## SUPPORT FOR IMMUNIZATION
 
 ```{r}
@@ -786,8 +761,6 @@ if (nrow(state_policies) == 1) {
   )
 }
 ```
-
-
 
 ```{r}
 # here we dynamically write Typst code,
@@ -823,8 +796,7 @@ typst_code <- glue(
 writeLines(typst_code, "state_policies.typ")
 ```
 
-<div style="background-color: #F8F8F8;">
-
+::: {style="background-color: #F8F8F8;"}
 ```{=typst}
 #set text(size: 8pt)
 #let policies = read("state_policies.typ")
@@ -832,14 +804,12 @@ writeLines(typst_code, "state_policies.typ")
 #box(inset: (left: 6pt, bottom: 6pt, top: 0pt))[#source("Source: AIM, LegiScan, NCSL")]
 #set text(size: 11pt)
 ```
+:::
 
-</div>
-
-```{=typst} 
+```{=typst}
 #pagebreak()
 #blueline()
 ```
-
 ## DISEASE STATUS
 
 ```{r}
@@ -848,17 +818,18 @@ text_content <- glue(
 )
 ```
 
-<div style="background-color: #F8F8F8;">
+::: {style="background-color: #F8F8F8;"}
+::: {layout="[1,1]"}
+<div>
 
-:::: {layout="[1,1]"}
-
-::: {#first-column}
-```{=typst} 
+```{=typst}
 #box(inset: 10pt)[#align(horizon)[#text("`r text_content`")]]
 ```
-:::
 
-::: {#second-column}
+</div>
+
+<div>
+
 ```{r}
 #| fig-height: 4
 #| fig-width: 6
@@ -872,45 +843,47 @@ ggsave(filename, plot = p)
 ```{=typst}
 #image("`r filename`", width: 100.0%, alt: "`r last_alt`")
 ```
-
-```{=typst} 
+```{=typst}
 #source("Source: U.S. Measles Tracker, IVAC.")
 ```
-:::
-
-::::
 
 </div>
+:::
+:::
 
-```{=typst} 
+```{=typst}
 #box(
   inset: 1em,
   fill: rgb("#002D72"),
-  [
-    #grid(
-      columns: (1fr, 10fr),
-      gutter: 0.1em,
-      align: horizon,
-      [#image("assets/coins.svg", alt: "Image of three coins stacked on top of each other.")],
-      [#text(
-        font: "Gentona",
-        size: 11pt,
-        fill: white
-      )[Vaccines can help prevent expensive disease outbreaks. A 2018–19 measles outbreak in Washington was estimated to cost #text(fill: rgb("#f1c400"))[US\$47,479] per case for both direct medical and public health response expenses.]]
+)[
+  #grid(
+    columns: (1fr, 10fr),
+    gutter: 0.1em,
+    align: horizon,
+  )[
+    #image(
+      "assets/coins.svg",
+      alt: "Image of three coins stacked on top of each other.",
     )
-    #place(
-      bottom + right,
-      dy: 3pt,
-      source(color: white, "Source: Pike, 2022")
-    )
+  ][
+    #text(
+      font: "Gentona",
+      size: 11pt,
+      fill: white,
+    )[
+      Vaccines can help prevent costly outbreaks. Even a single case of measles triggers an   outbreak response estimated to cost more than 
+      #text(fill: rgb("#f1c400"))[US\$224K], plus #text(fill: rgb("#f1c400"))[US\$16K] in costs for every additional case.
+    ]
   ]
-)
-```
 
-```{=typst} 
+  #place(bottom + right, dy: 3pt)[
+    #source(color: white, "Source: Sriudomporn & Patenaude, 2025")
+  ]
+]
+```
+```{=typst}
 #blueline()
 ```
-
 ## DATA SOURCES
 
 ```{r}
@@ -925,10 +898,9 @@ if (state_title == "New Hampshire") {
 #show list: set block(spacing: 0.5em) // reduce line height
 #set text(size: 8.5pt) // reduce all text font size
 ```
-
 Vaccination coverage:
 
-- DTaP: CDC, ChildVaxView Interactive! https://www.cdc.gov/childvaxview/about/interactive-reports.html. DTaP, ≥ 4 Doses, States/Local Areas, Birth Years/Cohorts 2017–2021, Age 24 months. Updated Aug 2024. 
+-   DTaP: CDC, ChildVaxView Interactive! https://www.cdc.gov/childvaxview/about/interactive-reports.html. DTaP, ≥ 4 Doses, States/Local Areas, Birth Years/Cohorts 2017--2021, Age 24 months. Updated Aug 2024.
 
 ```{r}
 #| output: asis
@@ -937,29 +909,27 @@ cat(source_mmr, "\n\n")
 
 Vaccination exemptions:
 
-- Status: NCSL, State Non-Medical Exemptions From School Immunization Requirements. https://www.ncsl.org/health/state-non-medical-exemptions-from-school-immunization-requirements. Updated July 2025.
-Rates: CDC, SchoolVaxView Interactive! https://www.cdc.gov/schoolvaxview/data/index.html. Exemption – Non-Medical Exemption, States, School Years 2023-24 and 2024-25. Updated July 2025.
+-   Status: NCSL, State Non-Medical Exemptions From School Immunization Requirements. https://www.ncsl.org/health/state-non-medical-exemptions-from-school-immunization-requirements. Updated July 2025. Rates: CDC, SchoolVaxView Interactive! https://www.cdc.gov/schoolvaxview/data/index.html. Exemption -- Non-Medical Exemption, States, School Years 2023-24 and 2024-25. Updated July 2025.
 
 Public health spending:
 
-- Public Health Funding in United States, America's Health Rankings, United Health Foundation. https://www.americashealthrankings.org/explore/measures/PH_funding. Accessed July 2025.
+-   Public Health Funding in United States, America's Health Rankings, United Health Foundation. https://www.americashealthrankings.org/explore/measures/PH_funding. Accessed July 2025.
 
 Universal vaccine purchasing:
 
-- Association of Immunization Managers, Policy Maps – Universal Vaccine Purchase Program. https://www.immunizationmanagers.org/resources/aim-policy-maps/. Updated April 2025.
+-   Association of Immunization Managers, Policy Maps -- Universal Vaccine Purchase Program. https://www.immunizationmanagers.org/resources/aim-policy-maps/. Updated April 2025.
 
 Support for immunization:
 
-- Association of Immunization Managers, Legislative Round-ups. https://www.immunizationmanagers.org/resources-toolkits/immunization-program-policy-toolkit/legislative-round-ups/. 
-LegiScan. https://legiscan.com/. Accessed July 2025.
-- NCSL State Public Health Legislation Database. https://www.ncsl.org/health/state-public-health-legislation-database. Accessed Sept 2025.
+-   Association of Immunization Managers, Legislative Round-ups. https://www.immunizationmanagers.org/resources-toolkits/immunization-program-policy-toolkit/legislative-round-ups/. LegiScan. https://legiscan.com/. Accessed July 2025.
+-   NCSL State Public Health Legislation Database. https://www.ncsl.org/health/state-public-health-legislation-database. Accessed Sept 2025.
 
 Disease status:
 
-- International Vaccine Access Center, U.S. Measles Tracker. https://publichealth.jhu.edu/ivac/resources/us-measles-tracker. Accessed July 22, 2025.
+-   International Vaccine Access Center, U.S. Measles Tracker. https://publichealth.jhu.edu/ivac/resources/us-measles-tracker. Accessed July 22, 2025.
 
 Measles outbreak cost:
 
-- Pike J, Melnick A, Gastañaduy PA, et al. Societal Costs of a Measles Outbreak. Pediatrics. 2021;147(4):e2020027037. doi:10.1542/peds.2020-027037
+-   Patenaude B. 2025. Quantifying the Cost of Measles Outbreak in the U.S. and How Costs Scale with Outbreak Size. medRxiv: 2025.10.24.2533872
 
-*Note: The high-level data included in this report do not reflect statewide variation in vaccination coverage or disease status. Further, state reporting policies may limit data completeness. For any data-related questions, please contact ivac@jh.edu.*
+*Note: The high-level data included in this report do not reflect statewide variation in vaccination coverage or disease status. Further, state reporting policies may limit data completeness. For any data-related questions, please contact ivac\@jh.edu.*
