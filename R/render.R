@@ -1,11 +1,14 @@
 # Load Packages -----------------------------------------------------------
 library(quarto)
+library(xmpdf)
+library(stringr)
 library(glue)
 library(tidyverse)
 library(here)
 library(fs)
 library(xfun)
 library(googledrive)
+library(xmpdf)
 
 # Run Typst 0.14
 Sys.setenv(QUARTO_TYPST = "/opt/homebrew/bin/typst")
@@ -94,8 +97,24 @@ change_parameters_yaml <- function(state) {
 
 walk(states, change_parameters_yaml)
 
+### Note about rendering:
+# Since we want to pass the --pdf-standard flag to Typst CLI,
+# we only use Quarto to render to .typ, and then we render ourselves
+# to pdf using the typst CLI.
+# This does not have a big impact of performance since Typst compilation
+# is very fast anyway.
+
 # Render Reports -----------------------------------------------------------
 walk(str_glue("documents/{states}.qmd"), quarto_render)
+
+# Custom Typst compilation -------------------------------------------------
+typst_compile <- function(state) {
+  system2(
+    "typst",
+    c("compile", glue("{state}.typ", " --pdf-standard", " ua-1"))
+  )
+}
+walk(str_glue("documents/{states}"), typst_compile)
 
 # Move Reports -------------------------------------------------------------
 all_reports <- dir_ls(path = "documents", regexp = ".pdf")
@@ -106,13 +125,35 @@ file_move(
 )
 
 rename_file <- function(state) {
-  state_title <- stringr::str_to_title(gsub("_", " ", state))
-  file.rename(
-    glue("reports/{state}.pdf"),
-    glue("reports/Status of Childhood Immunization in {state_title}.pdf")
+  state_title <- str_to_title(gsub("_", " ", state))
+  old_name <- glue("reports/{state}.pdf")
+  new_name <- glue(
+    "reports/Status of Childhood Immunization in {state_title}.pdf"
   )
+
+  file.rename(old_name, new_name)
 }
 walk(states, rename_file)
+
+
+# Update Titles ----------------------------------------------------------
+
+update_pdf_titles <- function(state) {
+  state_title <- str_to_title(gsub("_", " ", state))
+  pdf_path <- glue(
+    "reports/Status of Childhood Immunization in {state_title}.pdf"
+  )
+
+  set_docinfo(
+    docinfo = docinfo(
+      title = glue("Status of Childhood Immunization in {state_title}")
+    ),
+    input = pdf_path,
+    output = pdf_path
+  )
+}
+
+walk(states, update_pdf_titles)
 
 # Upload Reports -----------------------------------------------------------
 if (str_detect(Sys.getenv("GOOGLE_DRIVE_EMAIL"), "rfortherestofus.com")) {
