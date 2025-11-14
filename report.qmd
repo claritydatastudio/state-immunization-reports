@@ -871,8 +871,8 @@ ggsave(filename, plot = p)
       size: 11pt,
       fill: white,
     )[
-      Vaccines can help prevent costly outbreaks. Even a single case of measles triggers an   outbreak response estimated to cost more than 
-      #text(fill: rgb("#f1c400"))[US\$224K], plus #text(fill: rgb("#f1c400"))[US\$16K] in costs for every additional case.
+      Vaccines can help prevent costly outbreaks. Even a single case of measles triggers outbreak response activities, which have been found to cost an average of
+      #text(fill: rgb("#f1c400"))[US\$224K], in addition to #text(fill: rgb("#f1c400"))[US\$16K] for every additional case of measles.
     ]
   ]
 
