@@ -329,7 +329,7 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
           geography,
           levels = unique(c("United States", neighboring_data, state_name)) # <-- no dups
         ),
-        bar_fill = ifelse(geography == state_name, "#68ACE5", NA_character_),
+        bar_fill = ifelse(geography == state_name, "#51284F", NA_character_),
         txt_col = ifelse(geography == state_name, "white", "black")
       )
   }
@@ -353,7 +353,7 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
     geom_col(
       aes(fill = bar_fill),
       width = 0.5,
-      color = "#68ACE5",
+      color = "#51284F",
       linewidth = 1
     ) +
     scale_fill_identity() +
@@ -454,7 +454,7 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
 
   # Create base plot
   p <- ggplot(state_data, aes(x = school_year, y = estimate_percent)) +
-    geom_col(fill = "#68ACE5", width = 0.5) +
+    geom_col(fill = "#51284F", width = 0.5) +
     geom_text(
       aes(
         y = pmin(estimate_percent + 3, 100),

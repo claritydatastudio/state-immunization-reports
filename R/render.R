@@ -103,6 +103,7 @@ walk(states, change_parameters_yaml)
 # to pdf using the typst CLI.
 # This does not have a big impact of performance since Typst compilation
 # is very fast anyway.
+# See https://github.com/quarto-dev/quarto-cli/issues/13683
 
 # Render Reports -----------------------------------------------------------
 walk(str_glue("documents/{states}.qmd"), quarto_render)
