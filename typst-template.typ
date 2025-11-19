@@ -112,12 +112,12 @@
         width: 100%,
         height: 0.75in,
         outset: (x: 15%),
-        fill: rgb("#51284F"),
+        fill: rgb("#4E97E0"),
         pad(
           top: 16pt,
           block(
             width: 100%,
-            fill: rgb("#51284F"),
+            fill: rgb("#4E97E0"),
             [
               #grid(
                 columns: (3fr, auto, 1fr),
