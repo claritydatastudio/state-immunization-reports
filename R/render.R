@@ -106,16 +106,17 @@ walk(states, change_parameters_yaml)
 # See https://github.com/quarto-dev/quarto-cli/issues/13683
 
 # Render Reports -----------------------------------------------------------
-walk(str_glue("documents/{states}.qmd"), quarto_render)
 
 # Custom Typst compilation -------------------------------------------------
-typst_compile <- function(state) {
+render_and_compile <- function(state) {
+  quarto_render(str_glue("documents/{state}.qmd"))
   system2(
     "typst",
-    c("compile", glue("{state}.typ", " --pdf-standard", " ua-1"))
+    c("compile", glue("documents/{state}.typ", " --pdf-standard", " ua-1"))
   )
+  print(str_glue("{state} rendered"))
 }
-walk(str_glue("documents/{states}"), typst_compile)
+walk(states, render_and_compile)
 
 # Move Reports -------------------------------------------------------------
 all_reports <- dir_ls(path = "documents", regexp = ".pdf")
