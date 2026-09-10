@@ -68,10 +68,14 @@
 
 #let article(title: none, date: none, state: none, doc) = {
   let state = if state == none { "texas" } else { to-string(state) }
-  let state_title_case = string-to-titlecase(state)
+  let state_title_case = if lower(state) == "district of columbia" {
+    "Washington, D.C."
+  } else {
+    string-to-titlecase(state)
+  }
   let state_flag = "assets/flags/" + str.replace(lower(state), " ", "_") + ".svg"
   let alt_text_flag = "Flag of " + state_title_case
-  let formatted_title = title + " in " + state
+  let formatted_title = title + " in " + state_title_case
   let formatted_title = upper(formatted_title)
 
   set text(

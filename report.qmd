@@ -10,7 +10,7 @@ format:
          - typst-template.typ
          - typst-show.typ
 params:
- state: new york
+ state: idaho
 execute:
   echo: false
   message: false
@@ -31,6 +31,11 @@ source(here("R/charts_upd.R"))
 
 state <- params$state
 state_title <- gsub(" Of ", " of ", str_to_title(state))
+state_display <- if_else(
+  state_title == "District of Columbia",
+  "Washington, D.C.",
+  state_title
+)
 comparison_tolerance <- 0.5
 
 total_measles_cases <- read_csv(here("data-clean/total_measles_cases.csv"))
@@ -258,7 +263,7 @@ label_national_comparison <-
 # some states have some missing data here
 if (state_title == "Montana") {
   sentence_median_comparison <- glue(
-    "- {state_title} does not allow personal exemption.\n\n"
+    "- {state_display} does not allow personal exemption.\n\n"
   )
 } else if (
   !(state_title %in%
@@ -279,11 +284,11 @@ if (state_title == "Montana") {
     label_exemption_comparison <- "lower than"
   }
   sentence_median_comparison <- glue(
-    "- {state_title}'s non-medical exemption rate among kindergartners is {label_exemption_comparison} the United States rate.\n\n"
+    "- {state_display}'s non-medical exemption rate among kindergartners is {label_exemption_comparison} the United States rate.\n\n"
   )
 } else {
   sentence_median_comparison <- glue(
-    "- {state_title} does not allow personal or religious exemptions.\n\n"
+    "- {state_display} does not allow personal or religious exemptions.\n\n"
   )
 }
 
@@ -291,7 +296,7 @@ if (state_title %in% c("New Hampshire", "Kansas")) {
   sentence_mmr <- ""
 } else {
   sentence_mmr <- glue(
-    "- State-level immunization coverage in {state_title} for MMR vaccination is {label_national_comparison} national levels.\n\n"
+    "- State-level immunization coverage in {state_display} for MMR vaccination is {label_national_comparison} national levels.\n\n"
   )
 }
 
@@ -312,7 +317,7 @@ if (n_cases_measles == 1) {
 }
 
 print(glue(
-  "This brief illustrates the current status of childhood immunization in {state_title} and is intended to inform state-level policy decisions and priorities. Takeaways include:"
+  "This brief illustrates the current status of childhood immunization in {state_display} and is intended to inform state-level policy decisions and priorities. Takeaways include:"
 ))
 cat("\n\n")
 cat(
@@ -322,7 +327,7 @@ cat(
     "- State-level per capita public health spending is {label_spending_comparison} than the national rate.\n\n"
   ),
   glue(
-    "- {state_title} has reported {n_cases_measles} {measles_cases_text} of measles since January 1, 2026."
+    "- {state_display} has reported {n_cases_measles} {measles_cases_text} of measles since January 1, 2026."
   )
 )
 ```
@@ -338,7 +343,7 @@ cat(
 ```{r}
 #| output: asis
 print(glue(
-  "Maintaining sufficient vaccination coverage is critical for establishing community protection. The charts below demonstrate how coverage for two critical vaccines has changed over time in {state_title} and how it compares to neighboring states, national rates, and Healthy People 2030 (HP2030) targets."
+  "Maintaining sufficient vaccination coverage is critical for establishing community protection. The charts below demonstrate how coverage for two critical vaccines has changed over time in {state_display} and how it compares to neighboring states, national rates, and Healthy People 2030 (HP2030) targets."
 ))
 ```
 
@@ -426,7 +431,7 @@ if (is_above_us) {
 }
 
 text_content <- glue(
-  "In 2024, {label_yoy_comparison} 2-year-olds were fully vaccinated against diphtheria, tetanus, and pertussis (received all four doses of DTaP) in {state_title} compared to the previous year. Coverage in {state_title} is {label_target} the HP2030 target of 90%."
+  "In 2024, {label_yoy_comparison} 2-year-olds were fully vaccinated against diphtheria, tetanus, and pertussis (received all four doses of DTaP) in {state_display} compared to the previous year. Coverage in {state_display} is {label_target} the HP2030 target of 90%."
 )
 ```
 
@@ -512,7 +517,7 @@ if (state_title == "New Hampshire") {
   source <- "Source: New Hampshire DHHS"
 } else if (nrow(mmr_state_history) < 2) {
   text_content <- glue(
-    "{state_title} does not have two years of comparable MMR coverage data available."
+    "{state_display} does not have two years of comparable MMR coverage data available."
   )
   source <- "Source: SchoolVaxView"
 } else {
@@ -556,7 +561,7 @@ if (state_title == "New Hampshire") {
   }
 
   text_content <- glue(
-    "During the {mmr_year} school year, {label_yoy_comparison} proportion of kindergartners completed the measles, mumps, and rubella (MMR) vaccine series in {state_title} compared with the previous available year. Coverage in {state_title} {label_target} the HP2030 target of 95%."
+    "During the {mmr_year} school year, {label_yoy_comparison} proportion of kindergartners completed the measles, mumps, and rubella (MMR) vaccine series in {state_display} compared with the previous available year. Coverage in {state_display} {label_target} the HP2030 target of 95%."
   )
   source <- "Source: SchoolVaxView"
 }
@@ -613,7 +618,7 @@ if (
     heading_ad <- "Additional details on exemption requirements:"
   }
   text_content <- glue(
-    "{state_title}'s rate of non-medical exemptions among kindergartners during the {year_filter} school year {variation_text} the state's {year_filter_before} rate."
+    "{state_display}'s rate of non-medical exemptions among kindergartners during the {year_filter} school year {variation_text} the state's {year_filter_before} rate."
   )
 } else {
   additional_details <- exemption_policies_state |>
@@ -669,7 +674,7 @@ if (state_title == "District of Columbia") {
   )
 } else {
   text_content <- glue(
-    "Low levels of public health spending are thought to contribute to suboptimal immunization rates. Nationally, {state_title} ranks {rank_spending} in public health spending."
+    "Low levels of public health spending are thought to contribute to suboptimal immunization rates. Nationally, {state_display} ranks {rank_spending} in public health spending."
   )
 }
 ```
@@ -794,7 +799,7 @@ filename <- glue("report_files/{state}_measles_map.svg")
 ggsave(filename, plot = p, width = 6, height = 4)
 
 text_content <- glue(
-  "Measles outbreaks can indicate insufficient vaccination coverage within a population. Disease may spread across state borders when vaccine coverage is low. The accompanying map visualizes the number of measles cases reported in {state_title} and neighboring states since January 1, 2026."
+  "Measles outbreaks can indicate insufficient vaccination coverage within a population. Disease may spread across state borders when vaccine coverage is low. The accompanying map visualizes the number of measles cases reported in {state_display} and neighboring states since January 1, 2026."
 )
 ```
 

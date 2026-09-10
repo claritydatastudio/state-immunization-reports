@@ -75,7 +75,12 @@ michigan_detailed_cache <- counties("MI", cb = TRUE) |>
 # Main map
 # df must have columns: name (state), total (cases), geometry (sfc)
 # -------------------------------------------------------------------
+display_state_name <- function(state) {
+  ifelse(state == "District of Columbia", "Washington, D.C.", state)
+}
+
 measles_map <- function(df, state) {
+  state_display <- display_state_name(state)
   df_shifted <- shift_geometry(df, position = "outside")
   df_plot <- get_neighboring_states(df_shifted, state)
 
@@ -215,14 +220,14 @@ measles_map <- function(df, state) {
   }
 
   alt_text <- glue::glue(
-    "Map showing measles cases in {state} ({sel_val}) and surrounding states between January 1, 2026 and {format(Sys.Date(), '%B %d, %Y')}."
+    "Map showing measles cases in {state_display} ({sel_val}) and surrounding states between January 1, 2026 and {format(Sys.Date(), '%B %d, %Y')}."
   )
 
   # Create the title text
   if (sel_val == 1) {
-    title_text <- paste0(sel_val, " measles case in ", state)
+    title_text <- paste0(sel_val, " measles case in ", state_display)
   } else {
-    title_text <- paste0(sel_val, " measles cases in ", state)
+    title_text <- paste0(sel_val, " measles cases in ", state_display)
   }
 
   p <- df_centroids |>
@@ -303,6 +308,7 @@ measles_map <- function(df, state) {
 #-----------------------------------------------------------------------------
 
 mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
+  state_display <- display_state_name(state_name)
   # New Hampshire uses state childcare data; Kansas lacks a current-year MMR
   # estimate, so neither state should receive a cross-state comparison chart.
   if (state_name %in% c("New Hampshire", "Kansas")) {
@@ -330,15 +336,16 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
           levels = unique(c("United States", neighboring_data, state_name)) # <-- no dups
         ),
         bar_fill = ifelse(geography == state_name, "#4E97E0", NA_character_),
-        txt_col = ifelse(geography == state_name, "white", "black")
+        txt_col = ifelse(geography == state_name, "white", "black"),
+        geography_display = display_state_name(as.character(geography))
       )
   }
 
   alt_text <- glue::glue(
-    "Bar chart showing how {state_name} compares to neighboring states and the United States as a whole in terms of proportion of kindergarteners fully protected with MMR vaccines. ",
+    "Bar chart showing how {state_display} compares to neighboring states and the United States as a whole in terms of proportion of kindergarteners fully protected with MMR vaccines. ",
     paste0(
       paste0(
-        chart_data$geography,
+        chart_data$geography_display,
         ": ",
         janitor::round_half_up(chart_data$estimate_percent, 0),
         "%",
@@ -365,7 +372,7 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
       family = "Work Sans"
     ) +
     geom_text(
-      aes(label = geography, x = 2, color = txt_col),
+      aes(label = geography_display, x = 2, color = txt_col),
       hjust = 0,
       size = 4,
       family = "Work Sans"
@@ -421,6 +428,7 @@ mmr_vaccination_comparison_chart <- function(df_mmr, df, state_name) {
 #------------------------------------------------------------------------------
 
 mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
+  state_display <- display_state_name(state_name)
   state_data <- mmr_line_df |>
     filter(
       geography == state_name,
@@ -440,7 +448,7 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
   }
 
   alt_text <- glue::glue(
-    "Bar chart showing proportion of kindergarteners fully protected with MMR vaccines in {state_name} over time. ",
+    "Bar chart showing proportion of kindergarteners fully protected with MMR vaccines in {state_display} over time. ",
     paste0(
       paste0(
         state_data$school_year,
@@ -474,7 +482,7 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
       expand = expansion(mult = c(0, 0.12))
     ) +
     labs(
-      title = glue::glue("Vaccination in {state_name} over time"),
+      title = glue::glue("Vaccination in {state_display} over time"),
       alt = alt_text
     ) +
     theme_minimal() +
@@ -519,6 +527,7 @@ mmr_vaccination_over_time_chart_bar <- function(mmr_line_df, state_name) {
 #---------------------------------------------------------------------------------------
 
 dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name, comp_year = 2024) {
+  state_display <- display_state_name(state_name)
   
   # Pick two largest-pop neighboring states, excluding the selected state
   neighboring_data <- get_neighboring_states(df, state_name) |>
@@ -558,7 +567,8 @@ dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name, comp_year
         levels = rev(target_geos)
       ),
       bar_fill = ifelse(geography_chr == state_name, "#002D72", "white"),
-      txt_col = ifelse(geography_chr == state_name, "white", "black")
+      txt_col = ifelse(geography_chr == state_name, "white", "black"),
+      geography_display = display_state_name(geography_chr)
     )
   
   missing_geos <- chart_data |>
@@ -576,10 +586,10 @@ dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name, comp_year
     filter(!is.na(estimate_percent))
   
   alt_text <- glue::glue(
-    "Bar chart showing how {state_name} compares to neighboring states and the United States as a whole in terms of proportion of 2-year-olds fully protected with DTaP vaccines. ",
+    "Bar chart showing how {state_display} compares to neighboring states and the United States as a whole in terms of proportion of 2-year-olds fully protected with DTaP vaccines. ",
     paste0(
       paste0(
-        chart_data$geography_chr,
+        chart_data$geography_display,
         ": ",
         janitor::round_half_up(chart_data$estimate_percent, 0),
         "%",
@@ -614,7 +624,7 @@ dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name, comp_year
       family = "Work Sans"
     ) +
     geom_text(
-      aes(label = geography_chr, x = 2, color = txt_col),
+      aes(label = geography_display, x = 2, color = txt_col),
       hjust = 0,
       size = 4,
       family = "Work Sans"
@@ -660,6 +670,7 @@ dtap_vaccination_comparison_chart <- function(df_dtap, df, state_name, comp_year
 
 #------------------------------------------------------------------------------------------
 dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
+  state_display <- display_state_name(state_name)
   state_data <- dtap_line_df |>
     filter(geography == state_name) |>
     mutate(
@@ -670,7 +681,7 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
   n_x <- nlevels(state_data$year)
   
   alt_text <- glue::glue(
-    "Bar chart showing proportion of 2-year-olds fully protected with DTaP vaccines in {state_name} over time. ",
+    "Bar chart showing proportion of 2-year-olds fully protected with DTaP vaccines in {state_display} over time. ",
     paste0(
       paste0(
         state_data$year,
@@ -723,7 +734,7 @@ dtap_vaccination_over_time_chart_bar <- function(dtap_line_df, state_name) {
     ) +
     coord_cartesian(clip = "off") +
     labs(
-      title = glue::glue("Vaccination in {state_name} over time"),
+      title = glue::glue("Vaccination in {state_display} over time"),
       alt = alt_text
     ) +
     theme_minimal() +
